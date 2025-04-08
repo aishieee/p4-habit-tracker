@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages  
+from django.contrib import messages 
+from django.utils import timezone 
+from .models import Habit, HabitCompletion
+from .forms import HabitForm, HabitCompletionForm
 
 # Create your views here.
 @login_required
@@ -74,4 +77,34 @@ def habit_delete(request, pk):
         return redirect('habit_list')
     
     return render(request, 'habits/habit_confirm_delete.html', {'habit': habit})
+
+@login_required
+def log_completion(request, habit_id):
+    """
+    Log a habit completion for today.
+    """
+    habit = get_object_or_404(Habit, pk=habit_id, user=request.user)
+    today = timezone.now().date()
+    
+    # Check if a completion has already been logged today
+    existing_completion = habit.completions.filter(date=today).first()
+
+    if request.method == 'POST':
+        form = HabitCompletionForm(request.POST, instance=existing_completion)
+        if form.is_valid():
+            completion = form.save(commit=False)
+            completion.habit = habit
+            completion.date = today
+            completion.save()
+            
+            messages.success(request, f'Completion logged! Current streak: {calculate_streak(habit)} days')
+            return redirect('habit_list')
+    else:
+        form = HabitCompletionForm(instance=existing_completion)
+    
+    return render(request, 'habits/log_completion.html', {
+        'form': form,
+        'habit': habit,
+        'existing_completion': existing_completion
+    })
 
