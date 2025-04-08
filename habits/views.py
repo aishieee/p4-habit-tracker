@@ -2,10 +2,33 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages 
 from django.utils import timezone 
+from datetime import timedelta
 from .models import Habit, HabitCompletion
 from .forms import HabitForm, HabitCompletionForm
 
 # Create your views here.
+def calculate_streak(habit):
+    """
+    Calculate the current streak of consecutive days a habit has been completed.
+    """
+    today = timezone.now().date()
+    completions = habit.completions.filter(completed=True).order_by('-date')
+    
+    if not completions.exists():
+        return 0  # No completions yet
+    
+    streak = 0
+    current_date = today
+
+    for completion in completions:
+        if completion.date == current_date:
+            streak += 1
+            current_date -= timedelta(days=1)
+        else:
+            break  # Streak is broken
+    
+    return streak
+
 @login_required
 def habit_list(request):
     """
@@ -108,3 +131,16 @@ def log_completion(request, habit_id):
         'existing_completion': existing_completion
     })
 
+@login_required
+def habit_detail(request, pk):
+    """
+    Display details of a habit including its completion history and streak.
+    """
+    habit = get_object_or_404(Habit, pk=pk, user=request.user)
+    completions = habit.completions.order_by('-date')
+
+    return render(request, 'habits/habit_detail.html', {
+        'habit': habit,
+        'completions': completions,
+        'streak': calculate_streak(habit)
+    })
