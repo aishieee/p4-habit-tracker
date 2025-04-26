@@ -57,7 +57,7 @@ def habit_create(request):
     Handle the creation of a new habit.
     """
     if request.method == 'POST':
-        form = HabitForm(request.POST)
+        form = HabitForm(request.POST, user=request.user)  # Pass user here
         if form.is_valid():
             habit = form.save(commit=False)
             habit.user = request.user
@@ -65,7 +65,7 @@ def habit_create(request):
             messages.success(request, 'Habit created successfully!')
             return redirect('habit_list')
     else:
-        form = HabitForm()
+        form = HabitForm(user=request.user)  # Also pass user when loading the page
     
     return render(request, 'habits/habit_form.html', {'form': form})
 
