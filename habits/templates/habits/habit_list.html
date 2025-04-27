@@ -1,0 +1,11 @@
+{% extends 'habits/base.html' %}
+
+{% block title %}My Habits{% endblock %}
+
+{% block content %}
+<section class="py-4">
+    <!-- Section header and button to add a new habit -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Your Habits</h2>
+        <a href="{% url 'habits:habit_create' %}" class="btn btn-primary">Add New Habit</a>
+    </div>
