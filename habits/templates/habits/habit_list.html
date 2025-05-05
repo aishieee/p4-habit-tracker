@@ -32,3 +32,12 @@
 </div>
 </div>
 {% endfor %}
+</div>
+{% else %}
+    <!-- Display an alert if no habits are available -->
+    <div class="alert alert-info">
+        You have no habits yet. <a href="{% url 'habits:habit_create' %}">Create one now</a>!
+    </div>
+{% endif %}
+</section>
+{% endblock %}
