@@ -23,3 +23,12 @@
                    <small>Completion Rate: {{ habit_data.completion_rate|floatformat:2 }}</small>
                </div>
                <div>
+ 
+<!-- Action buttons for each habit -->
+ <a href="{% url 'habits:habit_detail' habit_data.habit.pk %}" class="btn btn-info btn-sm">View</a>
+ <a href="{% url 'habits:habit_update' habit_data.habit.pk %}" class="btn btn-warning btn-sm">Edit</a>
+ <a href="{% url 'habits:habit_delete' habit_data.habit.pk %}" class="btn btn-danger btn-sm">Delete</a>
+ <a href="{% url 'habits:log_completion' habit_data.habit.pk %}" class="btn btn-success btn-sm">Log</a>
+</div>
+</div>
+{% endfor %}
