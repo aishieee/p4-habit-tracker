@@ -9,3 +9,15 @@
             <h2 class="mb-0">Add a New Habit</h2>
         </div>
         <div class="card-body">
+<!-- Form for creating/editing a habit -->
+<form method="post">
+    {% csrf_token %}  
+    {{ form.as_p }}   
+ <!-- Submit and cancel buttons -->
+    <button type="submit" class="btn btn-primary">Save</button>
+     <a href="{% url 'habits:habit_list' %}" class="btn btn-secondary">Cancel</a>
+     </form>
+ </div>
+</div>
+</section>
+{% endblock %}
