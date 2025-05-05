@@ -63,7 +63,7 @@ def habit_create(request):
             habit.user = request.user
             habit.save()
             messages.success(request, 'Habit created successfully!')
-            return redirect('habit_list')
+            return redirect('habits:habit_list')
     else:
         form = HabitForm(user=request.user)  # Also pass user when loading the page
     
@@ -81,7 +81,7 @@ def habit_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Habit updated successfully!')
-            return redirect('habit_list')
+            return redirect('habits:habit_list')
     else:
         form = HabitForm(instance=habit)
     
@@ -97,7 +97,7 @@ def habit_delete(request, pk):
     if request.method == 'POST':
         habit.delete()
         messages.success(request, 'Habit deleted successfully!')
-        return redirect('habit_list')
+        return redirect('habits:habit_list')
     
     return render(request, 'habits/habit_confirm_delete.html', {'habit': habit})
 
@@ -121,7 +121,7 @@ def log_completion(request, habit_id):
             completion.save()
             
             messages.success(request, f'Completion logged! Current streak: {calculate_streak(habit)} days')
-            return redirect('habit_list')
+            return redirect('habits:habit_list')
     else:
         form = HabitCompletionForm(instance=existing_completion)
     
