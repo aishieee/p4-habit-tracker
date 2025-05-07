@@ -22,11 +22,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),  # Admin interface
 
     # Authentication URLs (login, logout, password reset)
-    path('accounts/', include('django.contrib.auth.urls')),
-    
+    path('accounts/login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+
     # Your habits app URLs
     path('habits/', include('habits.urls')),
-    
+
     # Optional: Redirect root URL to login page
     path('', auth_views.LoginView.as_view(template_name='registration/login.html')),
 ]
