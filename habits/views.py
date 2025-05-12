@@ -5,6 +5,7 @@ from django.utils import timezone
 from datetime import timedelta
 from .models import Habit, HabitCompletion
 from .forms import HabitForm, HabitCompletionForm
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 def calculate_streak(habit):
@@ -144,3 +145,16 @@ def habit_detail(request, pk):
         'completions': completions,
         'streak': calculate_streak(habit)
     })
+
+def register(request):
+    """
+    Register form for user to create an account 
+    """
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # or 'habits:habit_list'
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})
