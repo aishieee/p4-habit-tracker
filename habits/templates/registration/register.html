@@ -10,5 +10,23 @@
       <div class="card shadow">
         <div class="card-body">
           <h2 class="text-center mb-4">Create Account</h2>
-          
+        
+ <!-- User registration form -->
+ <form method="POST" novalidate>
+  {% csrf_token %}  
+
+  <!-- Display form errors -->
+  {% if form.errors %}
+    <div class="alert alert-danger">
+      {% for field in form %}
+        {% for error in field.errors %}
+          <div>{{ error }}</div>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <div>{{ error }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
 {% endblock %}
