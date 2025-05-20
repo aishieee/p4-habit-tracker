@@ -29,4 +29,25 @@
     </div>
   {% endif %}
 
+  {{ form.as_p }}
+
+  <!-- Submit button -->
+  <button type="submit" class="btn btn-primary w-100 mt-3">
+    Create Account
+  </button>
+</form>
+
+<!-- Link to login page for existing users -->
+<div class="text-center mt-3">
+  <p class="mb-0">
+    Already have an account?
+    <a href="{% url 'login' %}">Sign in</a>
+  </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
 {% endblock %}
