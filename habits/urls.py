@@ -17,4 +17,7 @@ urlpatterns = [
     
     # Completion tracking
     path('<int:habit_id>/log/', login_required(views.log_completion), name='log_completion'),
+
+    #User authentication 
+    
 ]
