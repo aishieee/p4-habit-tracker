@@ -8,6 +8,9 @@ app_name = 'habits'
 urlpatterns = [
     # Habit List (homepage for habits)
     path('', login_required(views.habit_list), name='habit_list'),
+
+    # Dashboard
+    path('dashboard/', views.dashboard, name='dashboard'),
     
     # Habit CRUD operations
     path('create/', login_required(views.habit_create), name='habit_create'),
