@@ -122,5 +122,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'habits:habit_list'  
+LOGIN_REDIRECT_URL = 'habits:dashboard'  
 LOGIN_URL = 'login'

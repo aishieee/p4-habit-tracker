@@ -156,7 +156,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)  # auto login after register
-            return redirect('habits:habit_list')  # homepage
+            return redirect('habits:dashboard')  # homepage
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
