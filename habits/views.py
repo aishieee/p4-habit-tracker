@@ -160,3 +160,16 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
+
+@login_required
+def dashboard(request):
+    """
+    Display the user's dashboard overview.
+    """
+    habits = Habit.objects.filter(user=request.user)
+    completions = HabitCompletion.objects.filter(habit__user=request.user)
+
+    return render(request, 'dashboard.html', {
+        'habits': habits,
+        'completions': completions,
+    })
