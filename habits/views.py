@@ -169,7 +169,7 @@ def dashboard(request):
     habits = Habit.objects.filter(user=request.user)
     completions = HabitCompletion.objects.filter(habit__user=request.user)
 
-    return render(request, 'dashboard.html', {
+    return render(request, 'habits/dashboard.html', {
         'habits': habits,
         'completions': completions,
     })
