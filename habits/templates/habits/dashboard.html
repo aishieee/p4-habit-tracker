@@ -6,5 +6,10 @@
 <div class="container mt-4">
     <!-- Personalised welcome message -->
     <h2>Welcome, {{ user.first_name|default:user.username }}!</h2>
-    
+      <!-- Current date display-->
+    <p><strong>{{ today|date:"l, F j, Y" }}</strong></p>
+    <!-- Motivational message with dynamic day of week -->
+  <p><em>"💪Keep going, you can do it this {{ today|date:'l' }}!"</em></p>
+</div>
+
 {% endblock %}
