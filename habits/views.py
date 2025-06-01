@@ -70,7 +70,7 @@ def habit_create(request):
     else:
         form = HabitForm(user=request.user)  # Also pass user when loading the page
     
-    return render(request, 'habits/habit_form.html', {'form': form})
+    return render(request, 'habits/add_habit.html', {'form': form})
 
 @login_required
 def habit_update(request, pk):
@@ -88,7 +88,7 @@ def habit_update(request, pk):
     else:
         form = HabitForm(instance=habit)
     
-    return render(request, 'habits/habit_form.html', {'form': form})
+    return render(request, 'habits/add_habit.html', {'form': form})
 
 @login_required
 def habit_delete(request, pk):
