@@ -8,6 +8,7 @@ from .forms import HabitForm, HabitCompletionForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from datetime import date
+import json
 
 # Create your views here.
 def calculate_streak(habit):
@@ -148,9 +149,13 @@ def dashboard(request):
     habits = Habit.objects.filter(user=request.user)
     completions = HabitCompletion.objects.filter(habit__user=request.user)
     today = date.today()
+    chart_labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    chart_data = [1, 2, 3, 2, 4, 1, 5]
 
     return render(request, 'habits/dashboard.html', {
         'habits': habits,
         'completions': completions,
         'today': today,
+        'chart_labels': json.dumps(chart_labels),
+        'chart_data': json.dumps(chart_data),
     })
