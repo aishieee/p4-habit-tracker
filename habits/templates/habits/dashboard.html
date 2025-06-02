@@ -81,9 +81,24 @@
   <ul class="list-group">
     {% for habit in habits %}
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        {{ habit.name }}
-        <a href="{% url 'habits:habit_detail' habit.pk %}" class="btn btn-sm btn-outline-primary">View</a>
-      </li>
+        <div>
+          <strong>{{ habit.name }}</strong>
+          <!-- Show category badge if the habit has one -->
+          {% if habit.get_category_display %}
+            <span class="badge bg-secondary">{{ habit.get_category_display }}</span>
+          {% endif %}
+        </div>
+        <!-- Form to toggle habit completion for the day -->
+        <form action="{% url 'habits:toggle_habit' habit.pk %}" method="post">
+          {% csrf_token %}
+          {% if habit.is_completed_today %}
+            <!-- Button is disabled if habit is already marked as complete -->
+            <button class="btn btn-success btn-sm" disabled>Done</button>
+          {% else %}
+            <!-- Button allows user to mark habit as done -->
+            <button class="btn btn-outline-primary btn-sm">Mark Done</button>
+          {% endif %}
+        </form>
     {% empty %}
       <li class="list-group-item">You don't have any habits yet.</li>
     {% endfor %}
