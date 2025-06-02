@@ -53,3 +53,8 @@ class Streak(models.Model):
     
     def __str__(self):
         return f"{self.habit.name}: {self.count} days"
+
+# Mark habit as done in dashboard
+@property
+def is_completed_today(self):
+    return self.completions.filter(date=timezone.now().date()).exists()
