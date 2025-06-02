@@ -33,28 +33,6 @@ def calculate_streak(habit):
     return streak
 
 @login_required
-def habit_list(request):
-    """
-    Display a list of the user's habits along with their streak and completion rate.
-    """
-    habits = Habit.objects.filter(user=request.user)
-    template_habits = Habit.objects.filter(is_template=True)
-    
-    habits_with_streaks = [
-        {
-            'habit': habit,
-            'streak': calculate_streak(habit),
-            'completion_rate': habit.completions.filter(completed=True).count() / habit.target if habit.target > 0 else 0
-        }
-        for habit in habits
-    ]
-    
-    return render(request, 'habits/habit_list.html', {
-        'habits': habits_with_streaks,
-        'template_habits': template_habits
-    })
-
-@login_required
 def habit_create(request):
     """
     Handle the creation of a new habit.
@@ -66,7 +44,7 @@ def habit_create(request):
             habit.user = request.user
             habit.save()
             messages.success(request, 'Habit created successfully!')
-            return redirect('habits:habit_list')
+            return redirect('habits:dashboard')
     else:
         form = HabitForm(user=request.user)  # Also pass user when loading the page
     
@@ -84,7 +62,7 @@ def habit_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Habit updated successfully!')
-            return redirect('habits:habit_list')
+            return redirect('habits:dashboard')
     else:
         form = HabitForm(instance=habit)
     
@@ -100,7 +78,7 @@ def habit_delete(request, pk):
     if request.method == 'POST':
         habit.delete()
         messages.success(request, 'Habit deleted successfully!')
-        return redirect('habits:habit_list')
+        return redirect('habits:dashboard')
     
     return render(request, 'habits/habit_confirm_delete.html', {'habit': habit})
 
@@ -124,7 +102,7 @@ def log_completion(request, habit_id):
             completion.save()
             
             messages.success(request, f'Completion logged! Current streak: {calculate_streak(habit)} days')
-            return redirect('habits:habit_list')
+            return redirect('habits:dashboard')
     else:
         form = HabitCompletionForm(instance=existing_completion)
     
