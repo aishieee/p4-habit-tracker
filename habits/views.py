@@ -9,6 +9,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from datetime import date
 import json
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 def calculate_streak(habit):
@@ -159,3 +162,25 @@ def dashboard(request):
         'chart_labels': json.dumps(chart_labels),
         'chart_data': json.dumps(chart_data),
     })
+
+@require_POST
+@login_required
+def toggle_habit(request, pk):
+    """
+    Toggle habit completion status
+    """
+    habit = get_object_or_404(Habit, pk=pk, user=request.user)
+    today = timezone.now().date()
+
+    completion = HabitCompletion.objects.filter(habit=habit, date=today).first()
+    if completion:
+        completion.delete()
+        completed = False
+    else:
+        HabitCompletion.objects.create(habit=habit, date=today, completed=True)
+        completed = True
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'completed': completed})
+    
+    return redirect('habits:dashboard')
