@@ -12,7 +12,8 @@ urlpatterns = [
     # Dashboard
     path('dashboard/', views.dashboard, name='dashboard'),
     path('<int:pk>/toggle/', views.toggle_habit, name='toggle_habit'),
-    
+    path('notes/add/', views.add_note, name='add_note'),
+
     # Habit CRUD operations
     path('create/', login_required(views.habit_create), name='habit_create'),
     path('<int:pk>/', login_required(views.habit_detail), name='habit_detail'),
