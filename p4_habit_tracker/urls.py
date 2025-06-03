@@ -29,7 +29,7 @@ urlpatterns = [
     path('accounts/register/', habit_views.register, name='register'),
 
     # Your habits app URLs
-    path('habits/', include('habits.urls')),
+    path('habits/', include(('habits.urls', 'habits'), namespace='habits')),
 
     # Optional: Redirect root URL to login page
     path('', auth_views.LoginView.as_view(template_name='registration/login.html')),
