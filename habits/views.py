@@ -230,3 +230,17 @@ def edit_note(request, pk):
         form = NoteForm(instance=note)
 
     return render(request, 'habits/edit_note.html', {'form': form})
+
+@login_required
+def delete_note(request, pk):
+    """
+    Allow user to confirm and delete a note
+    """
+    note = get_object_or_404(Note, pk=pk, user=request.user)
+
+    if request.method == 'POST':
+        note.delete()
+        return redirect('habits:note_list')
+
+    # Confirm before deleting
+    return render(request, 'habits/delete_note.html', {'note': note})
