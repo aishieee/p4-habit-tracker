@@ -212,3 +212,21 @@ def note_list(request):
     """
     notes = Note.objects.filter(user=request.user).order_by('-updated_at')
     return render(request, 'habits/note_list.html', {'notes': notes})
+
+@login_required
+def edit_note(request, pk):
+    """
+    Allow user to edit an existing note 
+    """
+    note = get_object_or_404(Note, pk=pk, user=request.user)
+
+    if request.method == 'POST':
+        # Populate the form with submitted data and bind it to the existing note
+        form = NoteForm(request.POST, instance=note)
+        if form.is_valid():
+            form.save()
+            return redirect('habits:note_list')
+    else:
+        form = NoteForm(instance=note)
+
+    return render(request, 'habits/edit_note.html', {'form': form})
