@@ -58,3 +58,13 @@ class Streak(models.Model):
 @property
 def is_completed_today(self):
     return self.completions.filter(date=timezone.now().date()).exists()
+
+# Allow user to create a note with optional pinning and timestamp
+class Note(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+    is_pinned = models.BooleanField(default=False)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.title
