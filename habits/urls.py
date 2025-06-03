@@ -12,7 +12,12 @@ urlpatterns = [
     # Dashboard
     path('dashboard/', views.dashboard, name='dashboard'),
     path('<int:pk>/toggle/', views.toggle_habit, name='toggle_habit'),
+
+    # Notes card
     path('notes/add/', views.add_note, name='add_note'),
+    path('notes/', views.note_list, name='note_list'),
+    path('notes/<int:pk>/edit/', views.edit_note, name='edit_note'),
+    path('notes/<int:pk>/delete/', views.delete_note, name='delete_note'),
 
     # Habit CRUD operations
     path('create/', login_required(views.habit_create), name='habit_create'),
