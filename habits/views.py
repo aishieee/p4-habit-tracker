@@ -13,6 +13,7 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from .forms import NoteForm
+from .models import Note
 
 # Create your views here.
 def calculate_streak(habit):
@@ -186,6 +187,8 @@ def toggle_habit(request, pk):
     
     return redirect('habits:dashboard')
 
+# Notes card 
+
 @login_required
 def add_note(request):
     """
@@ -201,3 +204,11 @@ def add_note(request):
     else:
         form = NoteForm()
     return render(request, 'habits/add_note.html', {'form': form})
+
+@login_required
+def note_list(request):
+    """
+    List all the users notes, ordered by most recently saved
+    """
+    notes = Note.objects.filter(user=request.user).order_by('-updated_at')
+    return render(request, 'habits/note_list.html', {'notes': notes})
