@@ -1,6 +1,7 @@
 from django import forms
 from .models import Habit, HabitCompletion
 from django.core.exceptions import ValidationError
+from .models import Note
 
 # Create and edit habits
 class HabitForm(forms.ModelForm):
@@ -38,3 +39,9 @@ class HabitCompletionForm(forms.ModelForm):
         widgets = {  
             'notes': forms.Textarea(attrs={'rows': 2, 'class': 'form-control'}),  # Bootstrap styling
         }
+
+# User-created notes
+class NoteForm(forms.ModelForm):
+    class Meta:
+        model = Note
+        fields = ['title', 'content', 'is_pinned']
