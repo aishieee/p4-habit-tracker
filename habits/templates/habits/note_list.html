@@ -1,0 +1,31 @@
+{% extends 'habits/base.html' %}
+
+{% block title %}
+  My Notes
+{% endblock %}
+
+{% block content %}
+  <h3>Your Notes</h3>
+  <a href="{% url 'habits:add_note' %}" class="btn btn-primary mb-3">Add Note</a>
+
+  <!-- List of notes -->
+  <ul class="list-group">
+    {% for note in notes %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <!-- Display note title and last updated timestamp -->
+          <strong>{{ note.title }}</strong><br>
+          <small>{{ note.updated_at|date:"D, d M Y H:i" }}</small>
+        </div>
+        <div>
+          <!-- Buttons to edit or delete the note -->
+          <a href="{% url 'habits:edit_note' note.pk %}" class="btn btn-sm btn-warning">Edit</a>
+          <a href="{% url 'habits:delete_note' note.pk %}" class="btn btn-sm btn-danger">Delete</a>
+        </div>
+      </li>
+    {% empty %}
+      <!-- Message shown if no notes are available -->
+      <li class="list-group-item">No notes yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
