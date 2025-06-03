@@ -1,0 +1,18 @@
+{% extends 'habits/base.html' %}
+
+{% block title %}
+  Edit Note
+{% endblock %}
+
+{% block content %}
+  <h2>Edit Note</h2>
+  <!-- Form to update an existing note -->
+  <form method="POST">
+    {% csrf_token %}  
+    {{ form.as_p }}
+    <!-- Submit button to save the changes -->
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <!-- Link to cancel editing and return to the note list -->
+    <a href="{% url 'habits:note_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}
