@@ -12,6 +12,7 @@ import json
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from .forms import NoteForm
 
 # Create your views here.
 def calculate_streak(habit):
@@ -184,3 +185,19 @@ def toggle_habit(request, pk):
         return JsonResponse({'completed': completed})
     
     return redirect('habits:dashboard')
+
+@login_required
+def add_note(request):
+    """
+    Allow users to create notes
+    """
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.user = request.user
+            note.save()
+            return redirect('notes')
+    else:
+        form = NoteForm()
+    return render(request, 'habits/add_note.html', {'form': form})
