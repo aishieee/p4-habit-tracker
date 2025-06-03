@@ -1,0 +1,21 @@
+{% extends 'habits/base.html' %}
+
+{% block title %}
+  Delete Note
+{% endblock %}
+
+{% block content %}
+  <h2>Delete Note</h2>
+  <!-- Warning message to confirm deletion -->
+  <p>Are you sure you want to delete this note?</p>
+  <!-- Display the title of the note to be deleted -->
+  <p><strong>{{ note.title }}</strong></p>
+  <!-- Form to confirm deletion of the note -->
+  <form method="post">
+    {% csrf_token %} 
+    <!-- Submit button to confirm deletion -->
+    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+    <!-- Link to cancel deletion and go back to the note list -->
+    <a href="{% url 'habits:note_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}

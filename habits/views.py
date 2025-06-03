@@ -200,7 +200,7 @@ def add_note(request):
             note = form.save(commit=False)
             note.user = request.user
             note.save()
-            return redirect('notes')
+            return redirect('habits:note_list')
     else:
         form = NoteForm()
     return render(request, 'habits/add_note.html', {'form': form})
