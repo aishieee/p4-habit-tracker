@@ -11,6 +11,13 @@
         <div class="container">
             <a class="navbar-brand" href="{% url 'habits:dashboard' %}">Habit Tracker</a>
         </div>
+        {% if request.user.is_authenticated %}
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link nav-link" style="display:inline; padding:0;">Logout</button>
+          </form>          
+{% endif %}
+
     </nav>
     
     <div class="container">

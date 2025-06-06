@@ -20,12 +20,13 @@ from django.contrib.auth import views as auth_views
 from habits import views as habit_views 
 from habits.views import register
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),  # Admin interface
 
     # Authentication URLs (login, logout, password reset)
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('accounts/register/', habit_views.register, name='register'),
 
     # Your habits app URLs
