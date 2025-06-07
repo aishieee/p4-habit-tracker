@@ -30,6 +30,9 @@ class Habit(models.Model):
     
     def __str__(self):
         return f"{self.name} ({self.user.username})"
+    
+    def is_completed_on(self, date):
+        return self.completions.filter(date=date, completed=True).exists()
 
 # Define the HabitCompletion model
 class HabitCompletion(models.Model):

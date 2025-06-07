@@ -14,6 +14,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from .forms import NoteForm
 from .models import Note
+from .models import Habit
 
 # Create your views here.
 def calculate_streak(habit):
