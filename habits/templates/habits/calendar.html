@@ -28,12 +28,12 @@
       </thead>
 
 <tbody>
-    {% for habit in habits %}
+    {% for row in habits %}
       <tr>
-        <td>{{ habit.name }}</td>
-        {% for date in week_dates %}
+        <td>{{ row.habit.name }}</td>
+        {% for completed in row.completions %}
           <td>
-            {% if habit.is_completed_on_date.date == date %}
+            {% if completed %}
               ✅ <!-- Habit completed -->
             {% else %}
               ❌ <!-- Habit incomplete -->

@@ -268,10 +268,19 @@ def calendar_view(request):
     week_dates = get_week_dates(current_date)
 
     # Get all habits for the currently logged-in user
-    habits = Habit.objects.filter(user=request.user)
+    habits = Habit.objects.filter(user=request.user).prefetch_related('completions')
+    habit_data = []
+    for habit in habits:
+        row = {
+            'habit': habit,
+            'completions': [
+                habit.is_completed_on(day) for day in week_dates
+            ]
+        }
+        habit_data.append(row)
 
     context = {
-        "habits": habits,
+        "habits": habit_data,
         "week_dates": week_dates,
         "previous_week": current_date - timedelta(weeks=1),
         "next_week": current_date + timedelta(weeks=1),
