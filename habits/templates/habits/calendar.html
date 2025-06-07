@@ -4,7 +4,7 @@
 
 {% block content %}
 <section id="calendar" class="py-4">
-  <!-- Header with navigation to previous/next week -->
+  <!-- Navigation to previous/next week -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="text-primary">Weekly Habit Calendar</h1>
     <div>
@@ -14,6 +14,18 @@
       <a href="?week={{ next_week|date:'Y-m-d' }}" class="btn btn-outline-secondary">Next →</a>
     </div>
   </div>
+
+  <!-- Responsive table for habit tracking -->
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>Habit</th>
+          {% for date in week_dates %}
+            <th>{{ date|date:"D d M" }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
 
 
 {% endblock %}
