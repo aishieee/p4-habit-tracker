@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth.decorators import login_required
+from .views import calendar_view
 
 app_name = 'habits'
 
@@ -27,6 +28,7 @@ urlpatterns = [
     
     # Completion tracking
     path('<int:habit_id>/log/', login_required(views.log_completion), name='log_completion'),
+    path("calendar/", login_required(calendar_view), name="calendar"),
 
     #User authentication 
     
