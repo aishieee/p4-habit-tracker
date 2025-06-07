@@ -1,0 +1,19 @@
+{% extends 'habits/base.html' %}
+
+{% block title %}Habit Calendar{% endblock %}
+
+{% block content %}
+<section id="calendar" class="py-4">
+  <!-- Header with navigation to previous/next week -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="text-primary">Weekly Habit Calendar</h1>
+    <div>
+      <!-- View the previous week -->
+      <a href="?week={{ previous_week|date:'Y-m-d' }}" class="btn btn-outline-secondary me-2">← Previous</a>
+      <!-- View the next week -->
+      <a href="?week={{ next_week|date:'Y-m-d' }}" class="btn btn-outline-secondary">Next →</a>
+    </div>
+  </div>
+
+
+{% endblock %}
