@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  <!-- Responsive table for habit tracking -->
+<!-- Responsive table for habit tracking -->
   <div class="table-responsive">
     <table class="table table-bordered">
       <thead class="table-light">
@@ -27,5 +27,24 @@
         </tr>
       </thead>
 
+<tbody>
+    {% for habit in habits %}
+      <tr>
+        <td>{{ habit.name }}</td>
+        {% for date in week_dates %}
+          <td>
+            {% if habit.is_completed_on_date.date == date %}
+              ✅ <!-- Habit completed -->
+            {% else %}
+              ❌ <!-- Habit incomplete -->
+            {% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+</section>
 
 {% endblock %}
