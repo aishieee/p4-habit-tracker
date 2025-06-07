@@ -14,19 +14,21 @@
         <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'habits:dashboard' %}">Habit Tracker</a>
-        </div>
         {% if request.user.is_authenticated %}
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <div class="bg-light border-end" style="width: 250px; min-height: 100vh;">
+                <div class="p-3 fw-bold">Habit Tracker</div>
+                <div class="list-group list-group-flush px-2">
+                    <a href="{% url 'habits:dashboard' %}" class="list-group-item list-group-item-action">Dashboard</a>
+                    <a href="{% url 'habits:habit_create' %}" class="list-group-item list-group-item-action">Add Habit</a>
         <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit" class="btn btn-link nav-link" style="display:inline; padding:0;">Logout</button>
-          </form>          
+        </form>          
+</div> 
 {% endif %}
-
-    </nav>
-    
+</div>
     <div class="container">
         {% block content %}
         {% endblock %}
