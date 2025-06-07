@@ -253,3 +253,27 @@ def get_week_dates(start_date):
     """
     start = start_date - timedelta(days=start_date.weekday())
     return [start + timedelta(days=i) for i in range(7)]
+
+def calendar_view(request):
+    """
+    Display the calendar for the current or selected week.
+    """
+    # Get the selected week from query parameters, or use today’s date if not provided
+    week_str = request.GET.get("week")
+    today = timezone.now().date()
+    current_date = date.fromisoformat(week_str) if week_str else today
+
+    # Generate a list of dates for the selected week (Mon–Sun)
+    week_dates = get_week_dates(current_date)
+
+    # Get all habits for the currently logged-in user
+    habits = Habit.objects.filter(user=request.user)
+
+    context = {
+        "habits": habits,
+        "week_dates": week_dates,
+        "previous_week": current_date - timedelta(weeks=1),
+        "next_week": current_date + timedelta(weeks=1),
+    }
+
+    return render(request, "habits/calendar.html", context)
