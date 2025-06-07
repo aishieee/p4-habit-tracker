@@ -244,3 +244,12 @@ def delete_note(request, pk):
 
     # Confirm before deleting
     return render(request, 'habits/delete_note.html', {'note': note})
+
+# Calendar
+
+def get_week_dates(start_date):
+    """
+    Show users a full week view on the calendar (Mon-Sun)
+    """
+    start = start_date - timedelta(days=start_date.weekday())
+    return [start + timedelta(days=i) for i in range(7)]
