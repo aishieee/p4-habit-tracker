@@ -15,6 +15,7 @@ from django.shortcuts import get_object_or_404
 from .forms import NoteForm
 from .models import Note
 from .models import Habit
+from datetime import datetime, timedelta, date
 
 # Create your views here.
 def calculate_streak(habit):
@@ -248,11 +249,11 @@ def delete_note(request, pk):
 
 # Calendar
 
-def get_week_dates(start_date):
+def get_week_dates(current_date):
     """
-    Show users a full week view on the calendar (Mon-Sun)
+    Calculate the Monday of the current week
     """
-    start = start_date - timedelta(days=start_date.weekday())
+    start = current_date - timedelta(days=current_date.weekday())  # Monday
     return [start + timedelta(days=i) for i in range(7)]
 
 def calendar_view(request):
