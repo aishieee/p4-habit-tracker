@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from django.contrib.auth.decorators import login_required
 from .views import calendar_view
+from .views import toggle_completion
 
 app_name = 'habits'
 

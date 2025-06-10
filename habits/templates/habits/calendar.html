@@ -56,3 +56,50 @@
 </section>
 
 {% endblock %}
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Select all habit calendar cells
+    const cells = document.querySelectorAll(".calendar-cell");
+
+    // Add click event listener to each cell
+    cells.forEach(cell => {
+        cell.addEventListener("click", function() {
+            const habitId = this.dataset.habitId; // Habit ID from data attribute
+            const date = this.dataset.date;       // Date (YYYY-MM-DD) from data attribute
+
+            // Send AJAX POST request to toggle completion status
+            fetch("/habits/api/toggle-completion/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}", 
+                },
+                body: JSON.stringify({
+                    habit_id: habitId,
+                    date: date
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    alert("Error: " + data.error); // Show error from server
+                } else {
+                    // Update cell UI based on new completion status
+                    cell.innerHTML = data.completed ? "✅" : "❌";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error); // Log unexpected errors
+                alert("An error occurred. Please try again.");
+            });
+        });
+    });
+});
+</script>
+{% endblock %}
