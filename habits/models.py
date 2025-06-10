@@ -5,6 +5,16 @@ from django.utils import timezone
 # Create your models here.
 # Define the Habit model
 class Habit(models.Model):
+#Allow users to categorise habits
+    CATEGORY_CHOICES = [
+        ('health', 'Health/Fitness'),
+        ('productivity', 'Productivity'),
+        ('selfcare', 'Self-Care'),
+        ('learning', 'Learning'),
+        ('work', 'Work'),
+        ('fun', 'Hobbies/Fun'),
+    ]
+
     FREQUENCY_CHOICES = [
         ('daily', 'Daily'),
         ('weekly', 'Weekly'),
@@ -16,6 +26,7 @@ class Habit(models.Model):
     description = models.TextField(blank=True)
     target = models.PositiveIntegerField(default=1)  # e.g. "8 glasses/day"
     frequency = models.CharField(max_length=20, choices=FREQUENCY_CHOICES, default='daily')
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, blank=True)
     creation_date = models.DateTimeField(auto_now_add=True)
     is_template = models.BooleanField(default=False)  # For admin-curated templates
     
