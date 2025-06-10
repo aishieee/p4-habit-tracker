@@ -16,6 +16,7 @@ from .forms import NoteForm
 from .models import Note
 from .models import Habit
 from datetime import datetime, timedelta, date
+from datetime import date, timedelta
 
 # Create your views here.
 def calculate_streak(habit):
@@ -153,15 +154,33 @@ def dashboard(request):
     """
     Display the user's dashboard overview.
     """
+    today = timezone.now().date()
+    start_of_week = today - timedelta(days=today.weekday())  # Monday
+    week_dates = [start_of_week + timedelta(days=i) for i in range(7)]
     habits = Habit.objects.filter(user=request.user)
-    completions = HabitCompletion.objects.filter(habit__user=request.user)
-    today = date.today()
-    chart_labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    chart_data = [1, 2, 3, 2, 4, 1, 5]
-
+    # Count how many habits were completed on each day this week
+    completion_counts = []
+    for day in week_dates:
+        count = HabitCompletion.objects.filter(
+            habit__user=request.user,
+            date=day,
+            completed=True
+        ).count()
+        completion_counts.append(count)
+    # Format data for Google Charts
+    chart_labels = [day.strftime('%a') for day in week_dates]  
+    chart_data = completion_counts
+    # Today's stats
+    completed_today = HabitCompletion.objects.filter(
+        habit__user=request.user,
+        date=today,
+        completed=True
+    ).count()
+    habit_count = habits.count()
     return render(request, 'habits/dashboard.html', {
         'habits': habits,
-        'completions': completions,
+        'completed_today': completed_today,
+        'habit_count': habit_count,
         'today': today,
         'chart_labels': json.dumps(chart_labels),
         'chart_data': json.dumps(chart_data),
