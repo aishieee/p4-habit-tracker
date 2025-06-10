@@ -289,3 +289,41 @@ def calendar_view(request):
     }
 
     return render(request, "habits/calendar.html", context)
+
+@require_POST
+def toggle_completion(request):
+    """
+    Toggle the completion status of a habit on a specific date.
+    """
+    try:
+        data = json.loads(request.body)
+        habit_id = data.get("habit_id")
+        date_str = data.get("date")
+
+        # Validate presence of required data
+        if not habit_id or not date_str:
+            return JsonResponse({"error": "Missing data"}, status=400)
+        date = datetime.strptime(date_str, "%Y-%m-%d").date()
+        # Fetch the habit belonging to the logged-in user
+        habit = Habit.objects.get(id=habit_id, user=request.user)
+        try:
+            # Try to get an existing HabitCompletion for the habit on the given date
+            completion = HabitCompletion.objects.get(habit=habit, date=date)
+            # Toggle the completed status (True → False or False → True)
+            completion.completed = not completion.completed
+            completion.save()
+
+            return JsonResponse({"completed": completion.completed})
+        
+        except HabitCompletion.DoesNotExist:
+            # No existing record: create one and mark as completed
+            HabitCompletion.objects.create(habit=habit, date=date, completed=True)
+            return JsonResponse({"completed": True})
+
+    except Habit.DoesNotExist:
+        # If the habit does not exist or doesn't belong to the user
+        return JsonResponse({"error": "Habit not found"}, status=404)
+
+    except Exception as e:
+        # Catch any other errors and return a server error response
+        return JsonResponse({"error": str(e)}, status=500)
