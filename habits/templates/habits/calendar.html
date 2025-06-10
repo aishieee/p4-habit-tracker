@@ -1,5 +1,8 @@
 {% extends 'habits/base.html' %}
 
+{% load static %}
+{% load habit_extras %}
+
 {% block title %}Habit Calendar{% endblock %}
 
 {% block content %}
@@ -27,22 +30,27 @@
         </tr>
       </thead>
 
-<tbody>
-    {% for row in habits %}
-      <tr>
-        <td>{{ row.habit.name }}</td>
-        {% for completed in row.completions %}
-          <td>
-            {% if completed %}
-              ✅ <!-- Habit completed -->
-            {% else %}
-              ❌ <!-- Habit incomplete -->
-            {% endif %}
-          </td>
+      <tbody>
+        {% for row in habits %}
+          <tr>
+            <td>{{ row.habit.name }}</td>
+            {% for date in week_dates %}
+              {% with date_str=date|date:'Y-m-d' %}
+                <td class="calendar-cell" 
+                    data-habit-id="{{ row.habit.id }}"
+                    data-date="{{ date_str }}"
+                    style="cursor: pointer;">
+                  {% if row.completions|get_item:date_str %}
+                    ✅ <!-- Habit completed -->
+                  {% else %}
+                    ❌ <!-- Habit incomplete -->
+                  {% endif %}
+                </td>
+              {% endwith %}
+            {% endfor %}
+          </tr>
         {% endfor %}
-      </tr>
-    {% endfor %}
-  </tbody>
+      </tbody>
 </table>
 </div>
 </section>
