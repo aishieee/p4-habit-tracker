@@ -119,6 +119,29 @@
     drawBarChart();
   }
 
+ // Draw a bar chart for weekly habit completion
+ function drawBarChart() {
+    const labels = JSON.parse('{{ chart_labels|escapejs }}');
+    const dataPoints = JSON.parse('{{ chart_data|escapejs }}');
+
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Day');            // X-axis (e.g. Mon, Tue)
+    data.addColumn('number', 'Completions');    // Y-axis values
+
+    // Add each row of data
+    for (let i = 0; i < labels.length; i++) {
+      data.addRow([labels[i], dataPoints[i]]);
+    }
+    // Chart options for formatting
+    const options = {
+      title: 'Habit Completion This Week',
+      hAxis: { title: 'Day' },
+      vAxis: { title: 'Completions', minValue: 0 },
+      legend: 'none'
+    };
+    const chart = new google.visualization.ColumnChart(document.getElementById('weekly-completion-chart'));
+    chart.draw(data, options);
+  }
 
 </script>
 {% endblock %}
