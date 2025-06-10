@@ -294,7 +294,7 @@ def calendar_view(request):
     for habit in habits:
         completions = {}
         for day in week_dates:
-            is_done = habit.completions.filter(date=day).exists()
+            is_done = habit.completions.filter(date=day, completed=True).exists()
             completions[day.strftime("%Y-%m-%d")] = is_done
         habit_data.append({
             "habit": habit,
