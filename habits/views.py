@@ -256,6 +256,7 @@ def get_week_dates(current_date):
     start = current_date - timedelta(days=current_date.weekday())  # Monday
     return [start + timedelta(days=i) for i in range(7)]
 
+@login_required
 def calendar_view(request):
     """
     Display the calendar for the current or selected week.
@@ -269,17 +270,17 @@ def calendar_view(request):
     week_dates = get_week_dates(current_date)
 
     # Get all habits for the currently logged-in user
-    habits = Habit.objects.filter(user=request.user).prefetch_related('completions')
+    habits = Habit.objects.filter(user=request.user).prefetch_related("completions")
     habit_data = []
     for habit in habits:
-        row = {
-            'habit': habit,
-            'completions': [
-                habit.is_completed_on(day) for day in week_dates
-            ]
-        }
-        habit_data.append(row)
-
+        completions = {}
+        for day in week_dates:
+            is_done = habit.completions.filter(date=day).exists()
+            completions[day.strftime("%Y-%m-%d")] = is_done
+        habit_data.append({
+            "habit": habit,
+            "completions": completions
+        })
     context = {
         "habits": habit_data,
         "week_dates": week_dates,
