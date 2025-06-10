@@ -7,12 +7,13 @@ from .models import Note
 class HabitForm(forms.ModelForm):
     class Meta:
         model = Habit  
-        fields = ['name', 'description', 'target', 'frequency']  # Fields to show in the form
+        fields = ['name', 'description', 'target', 'frequency','category']  # Fields to show in the form
         widgets = {  
             'name': forms.TextInput(attrs={'class': 'form-control'}),  # Bootstrap styling
             'description': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
             'target': forms.NumberInput(attrs={'class': 'form-control'}),
             'frequency': forms.Select(attrs={'class': 'form-select'}),
+            'category': forms.Select(attrs={'class': 'form-select'}),
         }
     
     
