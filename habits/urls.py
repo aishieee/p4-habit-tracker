@@ -3,6 +3,7 @@ from . import views
 from django.contrib.auth.decorators import login_required
 from .views import calendar_view
 from .views import toggle_completion
+from .views import dashboard
 
 app_name = 'habits'
 
@@ -12,7 +13,7 @@ urlpatterns = [
    
 
     # Dashboard
-    path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard/', dashboard, name='dashboard'),
     path('<int:pk>/toggle/', views.toggle_habit, name='toggle_habit'),
 
     # Notes card
