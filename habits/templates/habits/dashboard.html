@@ -114,9 +114,10 @@
   google.charts.load("current", { packages: ["corechart"] });
   google.charts.setOnLoadCallback(drawCharts);
 
-  // Call chart function
+  // Call chart functions
   function drawCharts() {
     drawBarChart();
+    drawPieChart();
   }
 
  // Draw a bar chart for weekly habit completion
@@ -142,6 +143,26 @@
     const chart = new google.visualization.ColumnChart(document.getElementById('weekly-completion-chart'));
     chart.draw(data, options);
   }
-
+// Draw a pie chart for category completion
+function drawPieChart() {
+    const categoryLabels = JSON.parse('{{ category_labels|escapejs }}');
+    const categoryData = JSON.parse('{{ category_data|escapejs }}');
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Category'); // Habit cateogory (e.g. Health, Self-care)
+    data.addColumn('number', 'Count'); 
+    // Add each row of data
+    for (let i = 0; i < categoryLabels.length; i++) {
+      data.addRow([categoryLabels[i], categoryData[i]]);
+    }
+    // Chart options for formatting
+    const options = {
+      title: 'Today\'s Completion by Category',
+      is3D: true,
+      pieSliceText: 'value',
+      pieHole: 0.4,
+    };
+    const chart = new google.visualization.PieChart(document.getElementById('category-completion-chart'));
+    chart.draw(data, options);
+  }
 </script>
 {% endblock %}
