@@ -17,6 +17,7 @@ from .models import Note
 from .models import Habit
 from datetime import datetime, timedelta, date
 from datetime import date, timedelta
+from django.db.models import Count
 
 # Create your views here.
 def calculate_streak(habit):
@@ -154,22 +155,19 @@ def dashboard(request):
     """
     Display the user's dashboard overview.
     """
-    today = timezone.now().date()
+    habits = Habit.objects.filter(user=request.user)
+    today = date.today()
+    # Weekly Bar Chart Data
     start_of_week = today - timedelta(days=today.weekday())  # Monday
     week_dates = [start_of_week + timedelta(days=i) for i in range(7)]
-    habits = Habit.objects.filter(user=request.user)
-    # Count how many habits were completed on each day this week
-    completion_counts = []
-    for day in week_dates:
-        count = HabitCompletion.objects.filter(
-            habit__user=request.user,
-            date=day,
-            completed=True
-        ).count()
-        completion_counts.append(count)
-    # Format data for Google Charts
-    chart_labels = [day.strftime('%a') for day in week_dates]  
-    chart_data = completion_counts
+    weekly_data = HabitCompletion.objects.filter(
+        habit__user=request.user,
+        date__range=[week_dates[0], week_dates[-1]],
+        completed=True
+    ).values('date').annotate(count=Count('id'))
+    chart_labels = [d.strftime('%a') for d in week_dates]
+    chart_data = [next((item['count'] for item in weekly_data if item['date'] == d), 0) for d in week_dates]
+   
     # Today's stats
     completed_today = HabitCompletion.objects.filter(
         habit__user=request.user,
