@@ -167,7 +167,19 @@ def dashboard(request):
     ).values('date').annotate(count=Count('id'))
     chart_labels = [d.strftime('%a') for d in week_dates]
     chart_data = [next((item['count'] for item in weekly_data if item['date'] == d), 0) for d in week_dates]
-   
+   # Pie Chart Data - Completion by Category (today only)
+    category_data = HabitCompletion.objects.filter(
+        habit__user=request.user,
+        date=today,
+        completed=True
+    ).values('habit__category').annotate(count=Count('id'))
+    category_labels = []
+    category_counts = []
+    category_map = dict(Habit.CATEGORY_CHOICES)
+    for item in category_data:
+        label = category_map.get(item['habit__category'], 'Uncategorised')
+        category_labels.append(label)
+        category_counts.append(item['count'])
     # Today's stats
     completed_today = HabitCompletion.objects.filter(
         habit__user=request.user,
@@ -182,6 +194,8 @@ def dashboard(request):
         'today': today,
         'chart_labels': json.dumps(chart_labels),
         'chart_data': json.dumps(chart_data),
+        'category_labels': json.dumps(category_labels),
+        'category_data': json.dumps(category_counts),
     })
 
 @require_POST
