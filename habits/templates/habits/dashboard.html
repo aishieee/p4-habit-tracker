@@ -52,6 +52,25 @@
     </div>
   </div>
 
+<!-- Habit Status Section -->
+<div class="card mt-4">
+  <div class="card-header bg-light">
+    <strong>Today's Habits</strong> 
+  </div>
+  <ul class="list-group list-group-flush">
+    {% for habit in habits %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          {{ habit.name }} <!-- Display habit name -->
+          {% if habit.get_category_display %}
+            <small class="text-muted">({{ habit.get_category_display }})</small> <!-- Optional category label -->
+          {% endif %}
+        </div>
+    {% endfor %}
+  </ul>
+</div>
+
+
 <!-- Dashboard Charts Section -->
 
 <div class="row mt-4">
