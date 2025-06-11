@@ -192,11 +192,7 @@ def dashboard(request):
         category_labels.append(label)
         category_counts.append(item['count'])
     # Today's stats
-    completed_today = HabitCompletion.objects.filter(
-        habit__user=request.user,
-        date=today,
-        completed=True
-    ).count()
+    completed_today = len(completed_habit_ids)
     habit_count = habits.count()
     return render(request, 'habits/dashboard.html', {
         'habits': habits,
