@@ -157,6 +157,17 @@ def dashboard(request):
     """
     habits = Habit.objects.filter(user=request.user)
     today = date.today()
+
+    #Active habits user has (To show if pending or completed)
+    completed_habit_ids = HabitCompletion.objects.filter(
+        habit__user=request.user,
+        date=today,
+        completed=True
+    ).values_list('habit_id', flat=True)
+    # Annotate each habit with a status for today
+    for habit in habits:
+        habit.status = "Done" if habit.id in completed_habit_ids else "Pending"
+        
     # Weekly Bar Chart Data
     start_of_week = today - timedelta(days=today.weekday())  # Monday
     week_dates = [start_of_week + timedelta(days=i) for i in range(7)]
