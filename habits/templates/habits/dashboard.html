@@ -66,6 +66,15 @@
             <small class="text-muted">({{ habit.get_category_display }})</small> <!-- Optional category label -->
           {% endif %}
         </div>
+        <div>
+          {% if habit.status == "Done" %}
+            <!-- Show done badge if habit is marked completed in calendar -->
+            <span class="badge text-white" style="background-color: hotpink;">✔ Done</span>
+          {% else %}
+            <!-- Otherwise, show pending badge -->
+            <span class="badge bg-secondary">Pending</span>
+          {% endif %}
+        </div>
     {% endfor %}
   </ul>
 </div>
