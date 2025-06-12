@@ -146,6 +146,24 @@ def habit_list(request):
     habits = Habit.objects.filter(user=request.user)
     return render(request, 'habits/habit_list.html', {'habits': habits})
 
+@login_required
+def habit_edit(request, pk):
+    """
+    Edit habit form 
+    """
+    habit = get_object_or_404(Habit, pk=pk, user=request.user)
+
+    if request.method == 'POST':
+        form = HabitForm(request.POST, instance=habit)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Habit updated successfully.')
+            return redirect('habits:habit_list')
+    else:
+        form = HabitForm(instance=habit)
+
+    return render(request, 'habits/habit_edit.html', {'form': form, 'habit': habit})
+
 def register(request):
     """
     Register form for user to create an account 
