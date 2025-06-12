@@ -1,0 +1,19 @@
+{% extends 'habits/base.html' %}
+
+{% block title %}Edit Habit{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Edit Habit: {{ habit.name }}</h2>
+
+  <!-- Form to edit the habit -->
+  <form method="post">
+    {% csrf_token %} 
+    {{ form.as_p }} 
+
+    <!-- Submit and Cancel buttons -->
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="{% url 'habits:habit_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}
