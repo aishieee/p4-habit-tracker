@@ -19,7 +19,7 @@
           </div>
           <!-- Placeholder for Edit button (to be implemented later) -->
           <div>
-            <a href="#" class="btn btn-outline-secondary btn-sm disabled">Edit</a>
+            <a href="{% url 'habits:habit_edit' habit.pk %}" class="btn btn-outline-secondary btn-sm">Edit</a>
           </div>
         </li>
       {% empty %}
