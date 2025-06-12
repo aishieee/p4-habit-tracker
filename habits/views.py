@@ -42,6 +42,8 @@ def calculate_streak(habit):
     
     return streak
 
+# Habits
+
 @login_required
 def habit_create(request):
     """
@@ -135,6 +137,14 @@ def habit_detail(request, pk):
         'completions': completions,
         'streak': calculate_streak(habit)
     })
+
+@login_required
+def habit_list(request):
+    """
+    Display a list of user-created habits
+    """
+    habits = Habit.objects.filter(user=request.user)
+    return render(request, 'habits/habit_list.html', {'habits': habits})
 
 def register(request):
     """
