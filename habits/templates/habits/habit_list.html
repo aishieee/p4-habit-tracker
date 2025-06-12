@@ -16,6 +16,15 @@
               <!-- Display category as a badge if available -->
               <span class="badge bg-secondary ms-2">{{ habit.get_category_display }}</span>
             {% endif %}
+          </div>
+          <!-- Placeholder for Edit button (to be implemented later) -->
+          <div>
+            <a href="#" class="btn btn-outline-secondary btn-sm disabled">Edit</a>
+          </div>
+        </li>
+      {% empty %}
+        <!-- Message shown when user has no habits -->
+        <li class="list-group-item">You haven't added any habits yet.</li>
       {% endfor %}
     </ul>
   </div>
