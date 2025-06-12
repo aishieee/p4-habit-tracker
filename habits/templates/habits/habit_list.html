@@ -1,0 +1,23 @@
+{% extends 'habits/base.html' %}
+
+{% block title %}Your Habits{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Your Habits</h2>
+  <div class="card">
+    <ul class="list-group list-group-flush">
+      {% for habit in habits %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <!-- Display habit name -->
+            <strong>{{ habit.name }}</strong>
+            {% if habit.get_category_display %}
+              <!-- Display category as a badge if available -->
+              <span class="badge bg-secondary ms-2">{{ habit.get_category_display }}</span>
+            {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
