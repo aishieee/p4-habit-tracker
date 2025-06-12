@@ -27,6 +27,7 @@ urlpatterns = [
     path('<int:pk>/', login_required(views.habit_detail), name='habit_detail'),
     path('<int:pk>/update/', login_required(views.habit_update), name='habit_update'),
     path('<int:pk>/delete/', login_required(views.habit_delete), name='habit_delete'),
+    path('your-habits/', views.habit_list, name='habit_list'),
     
     # Completion tracking
     path('<int:habit_id>/log/', login_required(views.log_completion), name='log_completion'),
