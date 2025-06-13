@@ -42,22 +42,18 @@ def calculate_streak(habit):
     """
     Calculate the current streak of consecutive days a habit has been completed.
     """
-    today = timezone.now().date()
-    completions = habit.completions.filter(completed=True).order_by('-date')
+    completions = habit.completions.filter(completed=True).order_by('-date').values_list('date', flat=True)
     
-    if not completions.exists():
-        return 0  # No completions yet
-    
-    streak = 0
-    current_date = today
-
-    for completion in completions:
-        if completion.date == current_date:
+    if not completions:
+        return 0
+    streak = 1  # Start at 1 because the most recent date counts
+    for i in range(1, len(completions)):
+        prev_date = completions[i - 1]
+        curr_date = completions[i]
+        if (prev_date - curr_date).days == 1:
             streak += 1
-            current_date -= timedelta(days=1)
         else:
             break  # Streak is broken
-    
     return streak
 
 # Habits
