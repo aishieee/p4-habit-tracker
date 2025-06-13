@@ -34,6 +34,7 @@ urlpatterns = [
     path('<int:habit_id>/log/', login_required(views.log_completion), name='log_completion'),
     path("calendar/", login_required(calendar_view), name="calendar"),
     path('api/toggle-completion/', toggle_completion, name='toggle_completion'),
+    path('badges/', views.badges, name='badges'),
 
     #User authentication 
     
