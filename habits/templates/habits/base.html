@@ -25,6 +25,7 @@
                     <a href="{% url 'habits:habit_list' %}" class="list-group-item list-group-item-action">Your Habits</a>
                     <a href="{% url 'habits:habit_create' %}" class="list-group-item list-group-item-action">Add Habit</a>
                     <a href="{% url 'habits:note_list' %}" class="list-group-item list-group-item-action">Notes</a>
+                    <a href="{% url 'habits:badges' %}" class="list-group-item list-group-item-action">Badges</a>
         <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit" class="btn btn-link nav-link" style="display:inline; padding:0;">Logout</button>
