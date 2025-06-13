@@ -32,8 +32,15 @@ def badges(request):
     habits = Habit.objects.filter(user=request.user)
     
     has_first_habit = habits.exists()
+    # Calculate habit streak 
+    has_streak_3 = all(calculate_streak(habit) >= 3 for habit in habits)
+    has_streak_7 = all(calculate_streak(habit) >= 7 for habit in habits)
+    has_streak_30 = all(calculate_streak(habit) >= 30 for habit in habits)
     context = {
         'has_first_habit': has_first_habit,
+        'has_streak_3': has_streak_3,
+        'has_streak_7': has_streak_7,
+        'has_streak_30': has_streak_30,
     }
     return render(request, 'habits/badges.html', context)
 
