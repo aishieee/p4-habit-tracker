@@ -224,6 +224,7 @@ def dashboard(request):
     completed_today = len(completed_habit_ids)
     habit_count = habits.count()
     notes_count = Note.objects.filter(user=request.user).count()
+    pinned_notes = Note.objects.filter(user=request.user, is_pinned=True).order_by('-updated_at')
     return render(request, 'habits/dashboard.html', {
         'habits': habits,
         'completed_today': completed_today,
@@ -234,6 +235,7 @@ def dashboard(request):
         'category_labels': json.dumps(category_labels),
         'category_data': json.dumps(category_counts),
         'notes_count': notes_count,
+        'pinned_notes': pinned_notes,
     })
 
 @require_POST

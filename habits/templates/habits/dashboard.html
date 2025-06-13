@@ -77,6 +77,24 @@
   </ul>
 </div>
 
+<!-- Pinned Notes -->
+<div class="card mt-4">
+  <div class="card-header bg-light">
+    <strong>Pinned Notes</strong>
+  </div>
+  <div style="max-height: 250px; overflow-y: auto;">
+    <ul class="list-group list-group-flush">
+      {% for note in pinned_notes %}
+        <li class="list-group-item">
+          {{ note.content|truncatewords:12 }}
+          <a href="{% url 'habits:edit_note' note.pk %}" class="btn btn-sm btn-link float-end">Edit</a>
+        </li>
+      {% empty %}
+        <li class="list-group-item">No pinned notes yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
 
 <!-- Dashboard Charts Section -->
 
