@@ -45,7 +45,7 @@
       <div class="card-body">
         <h5 class="card-title">Recent Notes</h5>
         <!-- TODO: Replace with dynamic data -->
-        <p class="display-6 text-purple">0</p>
+        <p class="display-6 text-purple">{{ notes_count }}</p>
         <!-- TODO: Update href to note list URL route -->
         <a href="{% url 'habits:add_note' %}">Add note</a>
       </div>

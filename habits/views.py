@@ -19,6 +19,7 @@ from datetime import datetime, timedelta, date
 from datetime import date, timedelta
 from django.db.models import Count
 
+
 # Create your views here.
 def calculate_streak(habit):
     """
@@ -222,6 +223,7 @@ def dashboard(request):
     # Today's stats
     completed_today = len(completed_habit_ids)
     habit_count = habits.count()
+    notes_count = Note.objects.filter(user=request.user).count()
     return render(request, 'habits/dashboard.html', {
         'habits': habits,
         'completed_today': completed_today,
@@ -231,6 +233,7 @@ def dashboard(request):
         'chart_data': json.dumps(chart_data),
         'category_labels': json.dumps(category_labels),
         'category_data': json.dumps(category_counts),
+        'notes_count': notes_count,
     })
 
 @require_POST
@@ -312,6 +315,8 @@ def delete_note(request, pk):
 
     # Confirm before deleting
     return render(request, 'habits/delete_note.html', {'note': note})
+
+
 
 # Calendar
 
