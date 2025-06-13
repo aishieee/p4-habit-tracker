@@ -21,6 +21,23 @@ from django.db.models import Count
 
 
 # Create your views here.
+
+# Badges
+
+@login_required
+def badges(request):
+    """
+    Unlock a badge when a user acquires a streak for all their habits
+    """
+    habits = Habit.objects.filter(user=request.user)
+    
+    has_first_habit = habits.exists()
+    context = {
+        'has_first_habit': has_first_habit,
+    }
+    return render(request, 'habits/badges.html', context)
+
+
 def calculate_streak(habit):
     """
     Calculate the current streak of consecutive days a habit has been completed.
