@@ -21,7 +21,7 @@
           <h5 class="card-title">Today's Progress</h5>
           <!-- Progress Counter -->
           <p class="display-6 text-primary">{{ completed_today }}/{{ habit_count }}</p>
-        </div>
+        
       </div>
     </div>
 </div>
@@ -31,7 +31,6 @@
     <div class="card text-center">
       <div class="card-body">
         <h5 class="card-title">Active Habits</h5>
-        <!-- TODO: Replace with dynamic data -->
         <p class="display-6 text-purple">{{habit_count }}</p>
         <!-- Add New Habit -->
         <a href="{% url 'habits:habit_create' %}">Add New</a>
@@ -44,13 +43,12 @@
     <div class="card text-center">
       <div class="card-body">
         <h5 class="card-title">Recent Notes</h5>
-        <!-- TODO: Replace with dynamic data -->
         <p class="display-6 text-purple">{{ notes_count }}</p>
-        <!-- TODO: Update href to note list URL route -->
         <a href="{% url 'habits:add_note' %}">Add note</a>
       </div>
     </div>
   </div>
+</div>
 
 <!-- Habit Status Section -->
 <div class="card mt-4">
@@ -87,7 +85,6 @@
     <div class="col-md-6">
       <div class="card p-3">
         <h5>Weekly Completion</h5>
-        <!-- TODO: Connect to Google charts -->
         <div id="weekly-completion-chart" style="height: 300px;"></div>
       </div>
     </div>
@@ -96,7 +93,6 @@
     <div class="col-md-6">
       <div class="card p-3">
         <h5>Today's Completion by Category</h5>
-        <!-- TODO: Connect to habit category data  -->
         <div id="category-completion-chart" style="height: 300px;"></div>
       </div>
     </div>
