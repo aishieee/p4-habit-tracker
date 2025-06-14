@@ -18,11 +18,26 @@ from .models import Habit
 from datetime import datetime, timedelta, date
 from datetime import date, timedelta
 from django.db.models import Count
+from .models import Badge, UserBadge
+from django.utils.timezone import now
 
 
 # Create your views here.
 
 # Badges
+
+def award_badge(user, slug):
+    """
+    Allow badges to be saved to database (Django admin - Userbadge table)
+    """
+    try:
+        badge = Badge.objects.get(slug=slug)
+        if not UserBadge.objects.filter(user=user, badge=badge).exists():
+            UserBadge.objects.create(user=user, badge=badge, awarded_at=now())
+            return True
+        return False
+    except Badge.DoesNotExist:
+        return None
 
 @login_required
 def badges(request):
@@ -30,12 +45,22 @@ def badges(request):
     Unlock a badge when a user acquires a streak for all their habits
     """
     habits = Habit.objects.filter(user=request.user)
-    
+
     has_first_habit = habits.exists()
-    # Calculate habit streak 
     has_streak_3 = all(calculate_streak(habit) >= 3 for habit in habits)
     has_streak_7 = all(calculate_streak(habit) >= 7 for habit in habits)
     has_streak_30 = all(calculate_streak(habit) >= 30 for habit in habits)
+
+    # 🏅 Award badges if thresholds are met
+    if has_streak_3:
+        award_badge(request.user, "3-day-streak")
+
+    if has_streak_7:
+        award_badge(request.user, "7-day-streak")
+
+    if has_streak_30:
+        award_badge(request.user, "1-month-streak")
+
     context = {
         'has_first_habit': has_first_habit,
         'has_streak_3': has_streak_3,
@@ -77,6 +102,9 @@ def habit_create(request):
             habit.user = request.user
             habit.save()
             messages.success(request, 'Habit created successfully!')
+
+            award_badge(request.user, "first-habit-created")
+
             return redirect('habits:dashboard')
     else:
         form = HabitForm(user=request.user)  # Also pass user when loading the page
