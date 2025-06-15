@@ -19,6 +19,9 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from habits import views as habit_views 
 from habits.views import register
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 
 urlpatterns = [
@@ -35,3 +38,6 @@ urlpatterns = [
     # Optional: Redirect root URL to login page
     path('', auth_views.LoginView.as_view(template_name='registration/login.html')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

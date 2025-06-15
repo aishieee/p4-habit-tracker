@@ -1,0 +1,71 @@
+{% extends 'habits/base.html' %}
+{% block title %}Your Badges{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Your Badges</h2>
+  <div class="row mt-3">
+    
+    <!-- First Habit Badge -->
+    <div class="col-md-4 mb-3">
+      <div class="card text-center border-secondary">
+        <div class="card-body">
+          <span class="display-6">🌱</span>
+          <h6 class="mt-2">First Habit Created</h6>
+          {% if has_first_habit %}
+            <span class="badge bg-success">Unlocked</span>
+          {% else %}
+            <span class="badge bg-secondary">Locked</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-Day Streak -->
+    <div class="col-md-4 mb-3">
+      <div class="card text-center border-secondary">
+        <div class="card-body">
+          <span class="display-6">🔥</span>
+          <h6 class="mt-2">3-Day Streak</h6>
+          {% if has_streak_3 %}
+            <span class="badge bg-success">Unlocked</span>
+          {% else %}
+            <span class="badge bg-secondary">Locked</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- 7-Day Streak -->
+    <div class="col-md-4 mb-3">
+      <div class="card text-center border-secondary">
+        <div class="card-body">
+          <span class="display-6">🏅</span>
+          <h6 class="mt-2">7-Day Streak</h6>
+          {% if has_streak_7 %}
+            <span class="badge bg-success">Unlocked</span>
+          {% else %}
+            <span class="badge bg-secondary">Locked</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- 1 Month Streak -->
+    <div class="col-md-4 mb-3">
+      <div class="card text-center border-secondary">
+        <div class="card-body">
+          <span class="display-6">🏆</span>
+          <h6 class="mt-2">1 Month Streak</h6>
+          {% if has_streak_30 %}
+            <span class="badge bg-success">Unlocked</span>
+          {% else %}
+            <span class="badge bg-secondary">Locked</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
