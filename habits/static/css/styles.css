@@ -12,11 +12,15 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
+.card .card-title {
+    color: #a38ccc;
+}
+
 
 /* Sidebar */
 
-.card .card-title {
-    color: #a38ccc;
+.bg-purple {
+    background-color: #8c52ff !important;
 }
 
 /* Sidebar toggle */
@@ -26,8 +30,49 @@ body {
 
 #sidebar-wrapper {
     transition: margin 0.25s ease-out;
+    background-color: #8c52ff;
+    color: white;
 }
 
-.bg-purple {
-    background-color: #8c52ff !important;
+#sidebar-wrapper .list-group-item {
+    background-color: #8c52ff;
+    color: white;
+    border: 1px solid white;
+    transition: background-color 0.2s ease;
 }
+
+#sidebar-wrapper .list-group-item:hover {
+    background-color: #a366ff;
+    color: white;
+}
+
+/* Sidebar title */
+.sidebar-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    padding-bottom: 1rem;
+}
+
+/* Sidebar links */
+.sidebar-link {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: white !important;
+    padding: 1rem 1rem; 
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: none; 
+}
+
+.sidebar-link i {
+    font-size: 1.2rem;
+}
+
+/* Sidebar hover effect */
+.sidebar-link:hover {
+    background-color: #6a0dad;
+    transition: background-color 0.3s ease;
+    border-radius: 0.3rem;
+}
+
