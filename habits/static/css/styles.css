@@ -5,6 +5,17 @@ body {
     color: #333;
 }
 
+/* Card styling */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.card .card-title {
+    color: #8c52ff;
+}
+
 /* Sidebar toggle */
 #wrapper.toggled #sidebar-wrapper {
     margin-left: -250px;
