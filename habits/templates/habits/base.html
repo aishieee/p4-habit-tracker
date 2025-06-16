@@ -11,7 +11,7 @@
         <!-- Font Awesome (Icons) -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{% static 'path/to/bootstrap.css' %}">
         <!-- CSS -->
         <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
@@ -50,21 +50,29 @@
 
 </div>
 {% endif %}
+
+
+
+
 <!-- Page Content -->
+
 <div id="page-content-wrapper" class="flex-grow-1">
+    
     {% if request.user.is_authenticated %}
-<!-- Toggle Button -->
- <button id="menu-toggle" class="btn btn-outline-secondary m-2 d-block">
-    ☰ 
-</button>
-{% endif %}
+<!-- Toggle Button (visible on small screens only) -->
+    <button class="btn btn-light d-md-none m-3" id="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    {% endif %}
+
     <div class="container">
         <script src="{% static 'js/script.js' %}"></script>
         {% block content %}
         {% endblock %}
     </div>
 </div>
-    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {% block extra_js %}
 {% endblock %}

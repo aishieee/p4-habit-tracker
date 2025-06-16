@@ -29,9 +29,16 @@ body {
 }
 
 #sidebar-wrapper {
-    transition: margin 0.25s ease-out;
     background-color: #8c52ff;
     color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    z-index: 1000;
+    transition: margin-left 0.3s ease-in-out;
+    margin-left: 0;
 }
 
 #sidebar-wrapper .list-group-item {
@@ -76,3 +83,69 @@ body {
     border-radius: 0.3rem;
 }
 
+#page-content-wrapper {
+    margin-left: 250px; /* Content shifts to the right when sidebar is open (desktop) */
+    transition: margin-left 0.3s ease-in-out;
+    width: 100%;
+}
+
+
+
+
+
+
+
+/* Responsive design media queries */
+
+/* Styles for phones (767px and below) */
+@media screen and (max-width: 767px) {
+    
+    /* Sidebar */
+    #sidebar-wrapper {
+        margin-left: -250px; /* hide sidebar by default */
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0; /* show sidebar when toggled */
+    }
+
+    #menu-toggle {
+        display: block !important; /* show hamburger icon */
+        position: relative;
+        z-index: 1100;
+        margin: 1rem;
+    }
+
+    #wrapper.toggled #page-content-wrapper::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 900;
+    }
+
+    #page-content-wrapper {
+        margin-left: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        margin-left: 0;
+    }
+
+}
+
+/* Styles for tablets (991px and below) */
+    @media screen and (max-width: 991px) and (min-width: 766px) {
+      
+    }
+    
+/* Styles for larger screen sizes (1260px and above) */
+    @media screen and (min-width: 1260px) {
+    /* Sidebar */ 
+ 
+}
