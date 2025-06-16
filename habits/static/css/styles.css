@@ -12,8 +12,11 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
+
+/* Sidebar */
+
 .card .card-title {
-    color: #8c52ff;
+    color: #a38ccc;
 }
 
 /* Sidebar toggle */
@@ -23,4 +26,8 @@ body {
 
 #sidebar-wrapper {
     transition: margin 0.25s ease-out;
+}
+
+.bg-purple {
+    background-color: #8c52ff !important;
 }
