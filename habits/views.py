@@ -75,7 +75,7 @@ def habit_delete(request, pk):
     if request.method == 'POST':
         habit.delete()
         messages.success(request, 'Habit deleted successfully!')
-        return redirect('habits:dashboard')
+        return redirect('habits:habit_list')
     
     return render(request, 'habits/habit_confirm_delete.html', {'habit': habit})
 

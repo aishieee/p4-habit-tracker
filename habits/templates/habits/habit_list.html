@@ -20,6 +20,11 @@
           <!-- Placeholder for Edit button (to be implemented later) -->
           <div>
             <a href="{% url 'habits:habit_edit' habit.pk %}" class="btn btn-outline-secondary btn-sm">Edit</a>
+          <!-- Delete Button -->
+          <form action="{% url 'habits:habit_delete' habit.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this habit?');">
+            {% csrf_token %}
+          <button type="submit" class="btn btn-outline-secondary btn-sm">Delete</button>
+        </form>
           </div>
         </li>
       {% empty %}
