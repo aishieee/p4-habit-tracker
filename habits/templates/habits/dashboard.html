@@ -3,7 +3,7 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-4 dashboard-header">
     <!-- Personalised welcome message -->
     <h2>Welcome, {{ user.first_name|default:user.username }}!</h2>
       <!-- Current date display-->
@@ -12,7 +12,7 @@
   <p><em>"💪Keep going, you can do it this {{ today|date:'l' }}!"</em></p>
 </div>
 
-<div class="row mt-4">
+<div class="row mt-4 dashboard-summary">
   <!-- Today's Progress Card -->
   <div class="col-12 col-sm-6 col-lg-4 mb-3">
     <div class="card text-center">
