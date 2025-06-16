@@ -1,0 +1,7 @@
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: -250px;
+}
+
+#sidebar-wrapper {
+    transition: margin 0.25s ease-out;
+}
