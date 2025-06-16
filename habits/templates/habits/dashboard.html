@@ -12,34 +12,30 @@
   <p><em>"💪Keep going, you can do it this {{ today|date:'l' }}!"</em></p>
 </div>
 
-<!-- Progress summary card -->
 <div class="row mt-4">
-    <!-- Today's Progress Card -->
-    <div class="col-md-4 mb-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Today's Progress</h5>
-          <!-- Progress Counter -->
-          <p class="display-6 text-primary">{{ completed_today }}/{{ habit_count }}</p>
-        
+  <!-- Today's Progress Card -->
+  <div class="col-12 col-sm-6 col-lg-4 mb-3">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">Today's Progress</h5>
+        <p class="display-6 text-primary">{{ completed_today }}/{{ habit_count }}</p>
       </div>
     </div>
-</div>
+  </div>
 
-<!-- Active Habits Card -->
-<div class="col-md-4 mb-3">
+  <!-- Active Habits Card -->
+  <div class="col-12 col-sm-6 col-lg-4 mb-3">
     <div class="card text-center">
       <div class="card-body">
         <h5 class="card-title">Active Habits</h5>
-        <p class="display-6 text-purple">{{habit_count }}</p>
-        <!-- Add New Habit -->
+        <p class="display-6 text-purple">{{ habit_count }}</p>
         <a href="{% url 'habits:habit_create' %}">Add New</a>
       </div>
     </div>
   </div>
 
-<!-- Notes Card -->
-<div class="col-md-4 mb-3">
+  <!-- Notes Card -->
+  <div class="col-12 col-sm-6 col-lg-4 mb-3">
     <div class="card text-center">
       <div class="card-body">
         <h5 class="card-title">Recent Notes</h5>
@@ -49,6 +45,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- Habit Status Section -->
 <div class="card mt-4">
