@@ -35,13 +35,7 @@ urlpatterns = [
     path("calendar/", login_required(calendar_view), name="calendar"),
     path('api/toggle-completion/', toggle_completion, name='toggle_completion'),
     path('badges/', views.badges, name='badges'),
-    path('challenges/<int:challenge_id>/', views.challenge_detail, name='challenge_detail'),
-    path('challenges/<int:challenge_id>/join/', views.join_challenge, name='join_challenge'),
-
-    path('debug-challenge/<int:challenge_id>/', views.debug_check_challenge, name='debug_challenge'),
-
-
-
+    
     #User authentication 
 
 ]

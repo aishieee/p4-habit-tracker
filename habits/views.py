@@ -20,170 +20,9 @@ from datetime import date, timedelta
 from django.db.models import Count
 from .models import Badge, UserBadge
 from django.utils.timezone import now
-
 from django.shortcuts import get_object_or_404, redirect
-from .models import Challenge, UserChallenge  # adjust if in a separate app
-from django.http import HttpResponse
-from .models import Challenge, HabitCompletion, UserChallenge
 
 # Create your views here.
-
-# Badges
-
-
-
-def debug_check_challenge(request, challenge_id):
-    user = request.user
-    challenge = Challenge.objects.get(id=challenge_id)
-    required_habits = challenge.required_habits.all()
-    start = challenge.start_date
-    end = challenge.end_date
-    delta = (end - start).days + 1
-
-    print(f"Checking challenge: {challenge.name}")
-    print(f"Required habits: {[h.name for h in required_habits]}")
-    print(f"From {start} to {end}")
-
-    for habit in required_habits:
-        for i in range(delta):
-            check_date = start + timedelta(days=i)
-            done = HabitCompletion.objects.filter(
-                habit=habit,
-                date=check_date,
-                habit__user=user
-            ).exists()
-            print(f"{habit.name} on {check_date}: {'✅' if done else '❌'}")
-            if not done:
-                return HttpResponse("❌ Not completed")
-    
-    return HttpResponse("✅ Challenge Completed")
-
-
-def check_challenge_completion(user):
-    user_challenges = UserChallenge.objects.filter(user=user, completed=False)
-
-    for uc in user_challenges:
-        challenge = uc.challenge
-        required_habits = challenge.required_habits.all()
-
-        start = challenge.start_date
-        end = challenge.end_date
-        delta = (end - start).days + 1  # Inclusive
-
-        completed = True
-
-        for habit in required_habits:
-            for i in range(delta):
-                check_date = start + timedelta(days=i)
-                if not HabitCompletion.objects.filter(user=user, habit=habit, date=check_date).exists():
-                    completed = False
-                    break
-            if not completed:
-                break
-
-        if completed:
-            uc.completed = True
-            uc.save()
-
-@login_required
-def join_challenge(request, challenge_id):
-    challenge = get_object_or_404(Challenge, id=challenge_id)
-
-    # Only create a UserChallenge if it doesn't exist
-    UserChallenge.objects.get_or_create(
-        user=request.user,
-        challenge=challenge
-    )
-
-    messages.success(request, "You have joined the challenge!")
-    return redirect('habits:badges')  # or challenge detail
-
-@login_required
-def challenge_detail(request, challenge_id):
-    challenge = get_object_or_404(Challenge, id=challenge_id)
-    user_habits = Habit.objects.filter(user=request.user)
-    required = challenge.required_habits.all()
-
-    missing = required.exclude(id__in=user_habits.values_list('id', flat=True))
-
-    context = {
-        'challenge': challenge,
-        'missing_habits': missing,
-    }
-    return render(request, 'habits/challenge_detail.html', context)
-
-def award_badge(user, slug):
-    """
-    Allow badges to be saved to database (Django admin - Userbadge table)
-    """
-    try:
-        badge = Badge.objects.get(slug=slug)
-        if not UserBadge.objects.filter(user=user, badge=badge).exists():
-            UserBadge.objects.create(user=user, badge=badge, awarded_at=now())
-            return True
-        return False
-    except Badge.DoesNotExist:
-        return None
-
-@login_required
-def badges(request):
-    """
-    Unlock a badge when a user acquires a streak for all their habits
-    """
-    habits = Habit.objects.filter(user=request.user)
-
-    has_first_habit = habits.exists()
-    has_streak_3 = all(calculate_streak(habit) >= 3 for habit in habits)
-    has_streak_7 = all(calculate_streak(habit) >= 7 for habit in habits)
-    has_streak_30 = all(calculate_streak(habit) >= 30 for habit in habits)
-
-    challenges = Challenge.objects.all()
-    badges = UserBadge.objects.filter(user=request.user)
-    joined_challenge_ids = UserChallenge.objects.filter(user=request.user).values_list('challenge_id', flat=True)
-
-    check_challenge_completion(request.user)  # ✅ Auto update challenge status
-    user_challenges = UserChallenge.objects.filter(user=request.user)
-
-    # 🏅 Award badges if thresholds are met
-    if has_streak_3:
-        award_badge(request.user, "3-day-streak")
-
-    if has_streak_7:
-        award_badge(request.user, "7-day-streak")
-
-    if has_streak_30:
-        award_badge(request.user, "1-month-streak")
-
-    context = {
-        'has_first_habit': has_first_habit,
-        'has_streak_3': has_streak_3,
-        'has_streak_7': has_streak_7,
-        'has_streak_30': has_streak_30,
-        'challenges': challenges,
-        'badges': badges,
-        'joined_challenge_ids': list(joined_challenge_ids),
-        'user_challenges': user_challenges,
-    }
-    return render(request, 'habits/badges.html', context)
-
-
-def calculate_streak(habit):
-    """
-    Calculate the current streak of consecutive days a habit has been completed.
-    """
-    completions = habit.completions.filter(completed=True).order_by('-date').values_list('date', flat=True)
-    
-    if not completions:
-        return 0
-    streak = 1  # Start at 1 because the most recent date counts
-    for i in range(1, len(completions)):
-        prev_date = completions[i - 1]
-        curr_date = completions[i]
-        if (prev_date - curr_date).days == 1:
-            streak += 1
-        else:
-            break  # Streak is broken
-    return streak
 
 # Habits
 
@@ -511,37 +350,97 @@ def calendar_view(request):
 @require_POST
 def toggle_completion(request):
     """
-    Toggle the completion status of a habit on a specific date.
+    Marks habit as complete or incomplete
+    """
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            habit_id = data.get('habit_id')
+            date = data.get('date')
+
+            if not habit_id or not date:
+                return JsonResponse({'error': 'Missing habit_id or date'}, status=400)
+
+            habit = Habit.objects.get(id=habit_id, user=request.user)
+
+            # Create a HabitCompletion record for the given habit and date
+            completion, created = HabitCompletion.objects.get_or_create(
+                habit=habit,
+                date=date,
+                defaults={'completed': True}
+            )
+
+            if not created:
+                # Toggle the completion status if record already exists
+                completion.completed = not completion.completed
+                completion.save()
+
+            return JsonResponse({
+                'completed': completion.completed,
+                'status': 'success'
+            })
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+# Badges
+
+def award_badge(user, slug):
+    """
+    Allow badges to be saved to database (Django admin - Userbadge table)
     """
     try:
-        data = json.loads(request.body)
-        habit_id = data.get("habit_id")
-        date_str = data.get("date")
+        badge = Badge.objects.get(slug=slug)
+        if not UserBadge.objects.filter(user=user, badge=badge).exists():
+            UserBadge.objects.create(user=user, badge=badge, awarded_at=now())
+            return True
+        return False
+    except Badge.DoesNotExist:
+        return None
 
-        # Validate presence of required data
-        if not habit_id or not date_str:
-            return JsonResponse({"error": "Missing data"}, status=400)
-        date = datetime.strptime(date_str, "%Y-%m-%d").date()
-        # Fetch the habit belonging to the logged-in user
-        habit = Habit.objects.get(id=habit_id, user=request.user)
-        try:
-            # Try to get an existing HabitCompletion for the habit on the given date
-            completion = HabitCompletion.objects.get(habit=habit, date=date)
-            # Toggle the completed status (True → False or False → True)
-            completion.completed = not completion.completed
-            completion.save()
+@login_required
+def badges(request):
+    habits = Habit.objects.filter(user=request.user)
 
-            return JsonResponse({"completed": completion.completed})
-        
-        except HabitCompletion.DoesNotExist:
-            # No existing record: create one and mark as completed
-            HabitCompletion.objects.create(habit=habit, date=date, completed=True)
-            return JsonResponse({"completed": True})
+    has_first_habit = habits.exists()
+    has_streak_3 = all(calculate_streak(habit) >= 3 for habit in habits)
+    has_streak_7 = all(calculate_streak(habit) >= 7 for habit in habits)
+    has_streak_30 = all(calculate_streak(habit) >= 30 for habit in habits)
 
-    except Habit.DoesNotExist:
-        # If the habit does not exist or doesn't belong to the user
-        return JsonResponse({"error": "Habit not found"}, status=404)
+    # 🏅 Streak badge logic
+    if has_streak_3:
+        award_badge(request.user, "3-day-streak")
+    if has_streak_7:
+        award_badge(request.user, "7-day-streak")
+    if has_streak_30:
+        award_badge(request.user, "1-month-streak")
 
-    except Exception as e:
-        # Catch any other errors and return a server error response
-        return JsonResponse({"error": str(e)}, status=500)
+    context = {
+        'has_first_habit': has_first_habit,
+        'has_streak_3': has_streak_3,
+        'has_streak_7': has_streak_7,
+        'has_streak_30': has_streak_30,
+        'badges': badges,
+    }
+    return render(request, 'habits/badges.html', context)
+
+
+def calculate_streak(habit):
+    """
+    Calculate the current streak of consecutive days a habit has been completed.
+    """
+    completions = habit.completions.filter(completed=True).order_by('-date').values_list('date', flat=True)
+    
+    if not completions:
+        return 0
+    streak = 1  # Start at 1 because the most recent date counts
+    for i in range(1, len(completions)):
+        prev_date = completions[i - 1]
+        curr_date = completions[i]
+        if (prev_date - curr_date).days == 1:
+            streak += 1
+        else:
+            break  # Streak is broken
+    return streak
