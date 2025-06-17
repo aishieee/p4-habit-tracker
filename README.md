@@ -105,6 +105,116 @@ The app includes a custom reminder system that checks for incomplete habits and 
 
 ## Testing
 
+### Browsers
+The site was manually tested on the following browsers:
+- Google Chrome (v125+)
+- Safari (macOS + iOS)
+
+On Google Chrome, responsiveness was checked using Chrome DevTools with multiple screen sizes (mobile, tablet, desktop).
+
+---
+
+### Frontend Testing
+
+#### HTML
+
+<details>
+<summary> View HTML W3C Markup Validator </summary>
+
+![Alt text for accessibility](assets/images/html-checker.png)
+
+</details>
+
+- Validated using [W3C Markup Validator](https://validator.w3.org/).
+
+#### CSS
+
+<details>
+<summary> View CSS W3C Markup Validator </summary>
+
+![Alt text for accessibility](assets/images/css-checker.png)
+
+</details>
+
+- Validated using [W3C CSS Validator](https://jigsaw.w3.org/css-validator/).
+- **1 error** was found in the Font Awesome CDN (`all.min.css`) related to a CSS variable not being recognised as a valid transform value. This is a known issue and does not affect site functionality.
+- **513 warnings** were mostly from external libraries such as Bootstrap and Font Awesome. These include:
+  - Vendor-specific properties (e.g. `-webkit-`, `-moz-`) used for cross-browser compatibility.
+  - CSS variables, which cannot be statically checked by the validator.
+  - Deprecated properties like `clip` and `break-word`.
+
+These warnings are expected when using modern frameworks and third-party libraries. Custom CSS was reviewed to ensure it follows best practices and is standards-compliant.
+
+
+#### Manual User Flow Tests
+| Functionality | Test Outcome |
+|--------------|---------------|
+| Navigation links (Home, Dashboard, Register, Login) | ✅ All links worked correctly and routed to intended pages |
+| Register new account | ✅ Account created, redirected to dashboard |
+| Login/logout | ✅ Verified successful and unsuccessful login attempts |
+| Add new habit | ✅ Form saved valid data; form errors appeared for missing/invalid fields |
+| Calendar habit checkboxes | ✅ Toggled correctly and saved completion data via Fetch API |
+| Chart updates on checkbox changes | ✅ Weekly progress chart updated dynamically with no page refresh |
+| Badge unlock system | ✅ 30-day streak badge unlocked after marking streaks in the database |
+
+---
+
+### Backend Testing
+#### Django
+All backend logic was tested manually and via the Django shell (`python3 manage.py shell`).
+
+**User Authentication Checks:**
+- Used `request.user.is_authenticated` in templates to display appropriate content:
+  ```django
+  {% if request.user.is_authenticated %}
+    <p>Welcome, {{ user.username }}!</p>
+  {% else %}
+    <a href="/login/">Sign in</a>
+  {% endif %}
+  ```
+- Prevented access to certain pages unless the user was logged in.
+
+**Database Testing with Shell:**
+- Created habits manually:
+  ```python
+  from habits.models import Habit
+  from django.contrib.auth.models import User
+  user = User.objects.get(username="testuser")
+  Habit.objects.create(name="Exercise", user=user, frequency="daily", target=30)
+  ```
+- Marked habits completed via `HabitCompletion` model:
+  ```python
+  from habits.models import HabitCompletion
+  from datetime import date
+  hc = HabitCompletion.objects.create(habit=habit, date=date.today())
+  ```
+- Tested badge logic manually:
+  ```python
+  from badges.models import Badge, UserBadge
+  UserBadge.objects.filter(user=user).update(unlocked=True)
+  ```
+
+### JavaScript (Google Charts)
+| Feature | Manual Test Outcome |
+|---------|----------------------|
+| Google Charts on dashboard | ✅ Renders with live habit completion data |
+| Chart updates after marking habits | ✅ Data updates via JavaScript and chart redraws successfully |
+| Chart fetch and display errors | ✅ Console logs show successful fetch and render |
+
+**Testing snippet used:**
+```js
+fetch('/get-habit-data/')
+  .then(response => response.json())
+  .then(data => drawChart(data));
+```
+
+---
+
+### Bugs
+- Heroku deployment failed initially due to missing config vars → fixed
+- Static file path conflicts → resolved by cleaning duplicate filenames
+- App crashed due to missing `DEFAULT_FROM_EMAIL` → fixed by setting dummy vars
+
 ### Email Functionality Testing
 
 This project uses Django’s built-in email system for email confirmations. Although email sending is not a core feature of the app due to a lack of time, the configuration must be valid to prevent deployment issues.
@@ -163,6 +273,8 @@ To resolve the issue, dummy environment variable values were added in the Heroku
 > **Note:** These are placeholder values added purely to allow successful deployment. No actual email functionality is active in the deployed app.
 
 ---
+
+All other features functioned as expected after thorough manual and shell-based testing.
 
 ### Result
 
