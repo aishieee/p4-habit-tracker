@@ -21,6 +21,7 @@ from django.db.models import Count
 from .models import Badge, UserBadge
 from django.utils.timezone import now
 from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
 
 # Create your views here.
 
@@ -37,11 +38,18 @@ def habit_create(request):
             habit = form.save(commit=False)
             habit.user = request.user
             habit.save()
-            messages.success(request, 'Habit created successfully!')
+
+            messages.success(request, '✅ Habit added successfully!')
 
             award_badge(request.user, "first-habit-created")
 
-            return redirect('habits:dashboard')
+            # Check for a streak badge unlock (simplified logic)
+            awarded_badge = Badge.objects.filter(name='7-Day Streak').first()
+            if awarded_badge and not UserBadge.objects.filter(user=request.user, badge=awarded_badge).exists():
+                UserBadge.objects.create(user=request.user, badge=awarded_badge)
+                messages.success(request, f'🎉 You unlocked the "{awarded_badge.name}" badge!')
+
+            return redirect('habits:habit_list')
     else:
         form = HabitForm(user=request.user)  # Also pass user when loading the page
     
