@@ -5,6 +5,37 @@
 ## Purpose
 The purpose of this app is to support users in forming positive habits and maintaining consistency. Users can create and manage their own habits, track their completion using an intuitive calendar, and unlock motivational badges as they progress.
 
+## User Stories 
+
+### Generic (Guest/Public) User
+
+- As a Guest User, I want to easily register for an account so I can start tracking my habits.
+
+### Registered (Logged-In) User
+
+- As a Registered User, I want to add new habits so I can build healthy routines.
+- As a Registered User, I want to mark my habits as completed on a calendar so I can track my consistency.
+- As a Registered User, I want to view visual charts of my habit progress so I can stay motivated.
+- As a Registered User, I want to unlock badges when I hit milestones so I feel accomplished.
+- As a Registered User, I want to receive reminders for when I am behind on habits to stay on track.
+- As a Registered User, I want to edit or delete my habits if my routine changes.
+- As a Registered User, I want to view all the badges I’ve unlocked 
+- As a Registered User, I want to log out securely when I’m done using the app.
+
+### Site Administrator
+
+- As a Site Administrator, I want to assign badges so users can earn them by completing habits.
+
+
+### Developer (Project Author)
+
+- As a Developer, I want to build a secure, scalable Django app that uses both front-end and back-end features.
+- As a Developer, I want to demonstrate my ability to manage users, authentication, and admin logic.
+- As a Developer, I want to apply clean UI/UX principles so the app looks professional and is easy to navigate.
+- As a Developer, I want to use GitHub for version control with clear commits to demonstrate my development process.
+- As a Developer, I want to complete the project using Agile principles and user stories, so it’s clear and well-managed.
+
+
 ## Features
 This Habit Tracker project was developed using **Django 4** in conjunction with **Bootstrap 5**, making it a fully responsive and mobile-first app. The application was built as part of **Project 4 (Full Stack Frameworks with Django)**. It draws on all prior modules and integrates both frontend and backend technologies into a single, functioning web app.
 
