@@ -103,6 +103,85 @@ The app includes a custom reminder system that checks for incomplete habits and 
   python3 manage.py send_reminders
 </details>
 
+## Structure 
+The Habit Tracker app consists of multiple templates, each responsible for a specific user-facing feature. All templates extend from base.html except for login.html and register.htnl. 
+
+### base.html
+This is the shared base template extended by all other pages. It includes:
+
+- The site-wide navigation bar
+- Conditional content based on authentication using
+
+``
+{% if request.user.is_authenticated %}
+    <!-- Show authenticated content -->
+{% else %}
+    <!-- Show guest links -->
+{% endif %}
+``
+
+### dashboard.html
+This is the main page after login. It displays:
+
+- A personalised greeting
+- Motivational quote
+- Today’s habits with checkboxes
+- Google Charts for weekly and category-based habit progress
+- Pinned user notes
+
+### calendar.html
+
+- Displays a calendar view with ✅ and ❌ icons to show if habits were completed or missed.
+- Data is updated via JavaScript and synced with the backend using the Fetch API.
+- Includes habit and date filters.
+
+### habit_list.html
+
+- Displays all user-created habits.
+- Each habit entry includes its name, frequency, category, and target
+- Users can edit or delete habits.
+- Includes feedback messages for actions like delete.
+
+### add_habit.html
+
+- A form for creating new habits.
+- Validates required fields.
+
+Fields include:
+- Habit name
+- Category
+- Frequency (e.g., Daily)
+- Target number of days
+
+### badges.html
+
+- Displays a collection of user-earned and locked badges.
+- Uses a badge system to gamify habit completion.
+
+### add_note.html
+
+- Allows users to add and save notes.
+- Notes can be pinned to the dashboard.
+
+### register.html
+
+- Page for user registration.
+
+Displays error messages for:
+- Existing username
+- Invalid email
+- Password mismatch
+
+On success, user is redirected to the dashboard.
+
+### login.html
+
+- Page for user login.
+- Displays validation errors for incorrect username/password.
+- Includes link to register if the user doesn't have an account.
+
+
+
 ## Testing
 
 ### Browsers
