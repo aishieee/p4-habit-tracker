@@ -5,6 +5,35 @@
 ## Purpose
 The purpose of this app is to support users in forming positive habits and maintaining consistency. Users can create and manage their own habits, track their completion using an intuitive calendar, and unlock motivational badges as they progress.
 
+## Features
+This Habit Tracker project was developed using **Django 4** in conjunction with **Bootstrap 5**, making it a fully responsive and mobile-first app. The application was built as part of **Project 4 (Full Stack Frameworks with Django)**. It draws on all prior modules and integrates both frontend and backend technologies into a single, functioning web app.
+
+Python 3.13.1 was used as the base language, and the project was managed in **Visual Studio Code** with Git and GitHub for version control. The project uses Django’s built-in templating system, URL routing, authentication tools, and Object-Relational Mapping to manage data through a SQLite3 database.
+
+The frontend was built using HTML5, CSS3, JavaScript, and Bootstrap 5, while dynamic user interactions and progress visuals were implemented with JavaScript and Google Charts.
+
+The project boasts a wide range of features:
+
+### Success Messages
+
+The app uses Django’s built-in messages framework to show feedback to users when actions are completed successfully. These messages include:
+
+- ✅ Habit added successfully!
+- Habit deleted successfully!
+
+
+Messages are styled with Bootstrap alert classes and appear at the top of the screen. They fade out automatically after a few seconds using JavaScript, so users don't need to click to dismiss them.
+
+---
+
+### Reminder Emails
+
+The app includes a custom reminder system that checks for incomplete habits and sends reminder emails to users. 
+
+- 🕓 Emails are triggered manually using:
+  ```bash
+  python3 manage.py send_reminders
+
 
 ## Deployment
 
