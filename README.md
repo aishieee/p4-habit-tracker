@@ -524,3 +524,22 @@ These values were then manually entered into **Heroku** under:
 
 </details>
 
+## Credits & Acknowledgements
+
+### Acknowledgements
+- Developed by **Aisha** as part of the [Diploma in Full Stack Software Development](https://codeinstitute.net/).
+
+- Due to time constraints towards the end of the project, significant assistance was provided by [ChatGPT](https://openai.com/chatgpt) by OpenAI to help with debugging, code generation, and feature implementation.
+
+### Third-Party Tools & Resources
+
+The following tools, libraries, and resources were used in the development of this project:
+
+- [Django](https://www.djangoproject.com/) – Python web framework used for backend logic and data handling.
+- [Bootstrap](https://getbootstrap.com/) – CSS framework for responsive layout and UI styling.
+- [Google Fonts](https://fonts.google.com/) – Custom font styles.
+- [Google Charts](https://developers.google.com/chart) – For visualising habit progress and statistics.
+- [FontAwesome](https://fontawesome.com/) – Icon library used throughout the application.
+- [Heroku](https://www.heroku.com/) – Hosting and deployment platform.
+- [GitHub](https://github.com/) – Version control and project repository hosting.
+- [VS Code](https://code.visualstudio.com/) – Code editor used during development.
