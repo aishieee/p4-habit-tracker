@@ -7,6 +7,36 @@ The purpose of this app is to support users in forming positive habits and maint
 
 ## User Stories 
 
+## Technologies Used
+
+### Languages
+- **Python 3.13.1** – Back-end language used with Django.
+- **HTML5** – Language for structuring web pages.
+- **CSS3** – Styling language used to design and style the frontend.
+- **JavaScript** – Used for dynamic interactivity and data visualisation.
+
+### Frameworks & Libraries
+- **Django** 
+- **Bootstrap 5** – Front-end framework used for responsive design and layout.
+- **Google Charts** – Used to visually represent user habit progress.
+- **Font Awesome** – Provides icon for links
+
+### Database
+- **SQLite3** – Default development database used with Django ORM for storing user data, habits, and completions.
+
+### Version Control & Development Tools
+- **Git** – Local version control system used to manage changes.
+- **GitHub** – Remote repository and collaboration platform.
+- **Visual Studio Code** – Code editor used for development.
+- **GitHub Projects / Issues** – Used for managing Agile workflow and user stories.
+
+### Deployment & Hosting
+- **Heroku** – Platform-as-a-Service (PaaS) used for deploying the live application.
+- **Gunicorn** – WSGI HTTP server for running Django apps on Heroku.
+- **Whitenoise** – Serves static files in production without needing a separate web server.
+
+## User Stories 
+
 ### Generic (Guest/Public) User
 
 - As a Guest User, I want to easily register for an account so I can start tracking my habits.
