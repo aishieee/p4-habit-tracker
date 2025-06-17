@@ -103,6 +103,10 @@ The app includes a custom reminder system that checks for incomplete habits and 
   python3 manage.py send_reminders
 </details>
 
+
+
+
+
 ## Deployment
 
 This Habit Tracker full-stack web application was developed using **Visual Studio Code** and version controlled with **Git** (locally) and **GitHub** (remotely). Deployment was carried out using **Heroku**, with production settings managed via environment variables and the Config Vars feature provided by the Heroku dashboard.
