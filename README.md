@@ -43,7 +43,44 @@ Python 3.13.1 was used as the base language, and the project was managed in **Vi
 
 The frontend was built using HTML5, CSS3, JavaScript, and Bootstrap 5, while dynamic user interactions and progress visuals were implemented with JavaScript and Google Charts.
 
-The project boasts a wide range of features:
+<details>
+  <summary><strong>The project boasts a wide range of features:</strong></summary>
+
+<br/>
+
+### User Registration, Login & Authentication
+- Django’s built-in authentication system allows users to register, log in, and log out securely.
+- Custom messages guide users through successful or failed login/logout attempts.
+- Access to habit management is restricted to logged-in users only.
+- Logged-in users are automatically redirected to their dashboard, while unauthenticated users are prevented from accessing protected routes such as the sidebar.
+
+### Habit Management (CRUD)
+- Users can create new habits by specifying a name, frequency, and target completion values.
+- Full CRUD functionality is available:
+  - **Create** a habit
+  - **Read/View** habits in a list or calendar
+  - **Update** habits (e.g. editing habit names)
+  - **Delete** habits individually
+- Habit data is stored in the SQLite3 database and tied specifically to the user account that created it.
+
+### Calendar View & Daily Progress Tracking
+- Each user sees a calendar grid with daily habit tracking.
+- ✅ indicates a completed habit for the day, ❌ indicates a missed one.
+- Navigation toggles allow users to move between calendar months.
+- Habit completion is stored per day, allowing Django to calculate weekly/monthly progress accurately.
+
+### Badge System for Motivation
+- Badges act as motivational incentives, rewarding users for consistency.
+- e.g. badge types:
+  - **30-Day Streak Badge**: Automatically awarded after marking a habit as complete for 30 consecutive days.
+- Badges have "Locked" and "Unlocked" states. Users can view both in their badge panel.
+- Badges are linked to models and stored in the database, allowing users to persist achievements.
+
+### Google Charts Integration
+- Weekly habit completion data is displayed using Google Charts.
+- Charts are dynamically generated based on user activity and habit data passed from Django views to JavaScript.
+- This provides users with a clear, visual representation of their consistency and progress.
+
 
 ### Success Messages
 
@@ -64,7 +101,7 @@ The app includes a custom reminder system that checks for incomplete habits and 
 - 🕓 Emails are triggered manually using:
   ```bash
   python3 manage.py send_reminders
-
+</details>
 
 ## Deployment
 
