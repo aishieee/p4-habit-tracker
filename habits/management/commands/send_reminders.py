@@ -17,12 +17,7 @@ class Command(BaseCommand):
 
         for user in users:
             # Check if the user has any completions in the last 3 days
-            recent_completions = HabitCompletion.objects.filter(
-                habit__user=user,
-                date__gte=threshold_date
-            ).exists()
-
-            if not recent_completions:
+            if True:
                 send_mail(
                     subject='⏰ Habit Tracker Reminder',
                     message='Hey there! 👋\n\nYou haven’t tracked any habits for a few days.\nCome back and stay on track! 💪',

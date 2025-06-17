@@ -22,6 +22,8 @@ from .models import Badge, UserBadge
 from django.utils.timezone import now
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
+from .auth_forms import CustomUserCreationForm
+
 
 # Create your views here.
 
@@ -162,13 +164,13 @@ def register(request):
     Register form for user to create an account 
     """
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)  # auto login after register
-            return redirect('habits:dashboard')  # homepage
+            form.save()
+            messages.success(request, "✅ Account created successfully!")
+            return redirect('habits:dashboard')  
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
 
 @login_required
