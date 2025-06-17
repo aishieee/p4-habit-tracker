@@ -103,6 +103,76 @@ The app includes a custom reminder system that checks for incomplete habits and 
   python3 manage.py send_reminders
 </details>
 
+## Testing
+
+### Email Functionality Testing
+
+This project uses Django’s built-in email system for email confirmations. Although email sending is not a core feature of the app due to a lack of time, the configuration must be valid to prevent deployment issues.
+
+### Configuration Issue on Heroku
+
+During deployment to Heroku, the application crashed due to missing environment variables required for Django’s email settings. 
+
+<details>
+<summary>The error was identified using the Heroku CLI:</summary>
+
+
+```
+heroku logs --tail
+```
+
+The logs revealed the following error:
+
+```
+decouple.UndefinedValueError: DEFAULT_FROM_EMAIL not found. Declare it as envvar or define a default value.
+```
+
+This was caused by the following environment-dependent email settings in settings.py, which use decouple.config():
+
+```
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+```
+
+Since these variables were not defined in Heroku's Config Vars, Django raised an error and the app crashed.
+</details>
+
+
+Solution
+To resolve the issue, dummy environment variable values were added in the Heroku dashboard:
+
+1. Go to my Heroku app.
+2. Navigate to Settings → Reveal Config Vars.
+3. Add the following keys and dummy values:
+
+### Heroku Email Config Vars (Dummy Values)
+
+| Key                  | Value                  |
+|----------------------|------------------------|
+| EMAIL_HOST           | smtp.gmail.com         |
+| EMAIL_PORT           | 587                    |
+| EMAIL_USE_TLS        | True                   |
+| EMAIL_HOST_USER      | test@example.com       |
+| EMAIL_HOST_PASSWORD  | dummy-password         |
+| DEFAULT_FROM_EMAIL   | noreply@example.com    |
+
+> **Note:** These are placeholder values added purely to allow successful deployment. No actual email functionality is active in the deployed app.
+
+---
+
+### Result
+
+After adding the above config vars:
+
+- The app booted successfully on Heroku.  
+- The `python manage.py collectstatic --noinput` command completed without errors.  
+- The Heroku deployment pipeline ran successfully and the live site was accessible again.
+
+This resolved the deployment blocker and allowed the project to be submitted successfully.
 
 
 
