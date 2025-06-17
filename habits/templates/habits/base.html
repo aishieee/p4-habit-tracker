@@ -16,9 +16,8 @@
         <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-        
+{% if request.user.is_authenticated %}
         <div id="wrapper" class="d-flex">
-            {% if request.user.is_authenticated %}
             <!-- Sidebar -->
             <div id="sidebar-wrapper" class="bg-light border-end bg-purple text-white" style="width: 250px; min-height: 100vh;">
                 <div class="p-3 sidebar-title">Habit Tracker</div>
@@ -45,12 +44,13 @@
             {% csrf_token %}
             <button type="submit" class="btn btn-link nav-link sidebar-link" style="display:inline; padding:0;">
                 <i class="fas fa-sign-out-alt me-2"></i>Logout</button>
-        </form>          
+        </form>  
+            
 </div> 
-
+{% endif %}   
 
 </div>
-{% endif %}
+
 
 
 
